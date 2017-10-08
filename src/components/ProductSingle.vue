@@ -1,7 +1,7 @@
 <template>
     <section>
         <div>
-            <icon name="language" scale="3"></icon>
+            <img class="" src="http://via.placeholder.com/250x250" alt="Generic placeholder image" width="250" height="250">
         </div>
         <div>
             <h2>{{ product.title }}</h2>
@@ -9,7 +9,6 @@
             <p>{{ product.price }}</p>
             <p>{{ product.description }}</p>
             <button @click.prevent="addToCart(product)">Add To Cart</button>
-            <button @click.prevent="removeFromCart(product)">Remove From Cart</button>
         </div>
     </section>
 </template>
@@ -57,10 +56,11 @@
 <style scoped>
 
     section {
-        margin-top: 200px;
+        margin-top: 20px;
         text-align: center;
         font-family: Helvetica, sans-serif;
-
     }
+
+
 
 </style>

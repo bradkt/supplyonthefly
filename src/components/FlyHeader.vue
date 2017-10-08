@@ -16,13 +16,13 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#">{{ headerText }}</a>
+                            <a class="navbar-brand" href="#"><img class="img-responsive header-logo" src="../assets/supply-on-the-fly-logo-350.png" alt="SOTF Logo" width="200" height="30"></a>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
                                 <li class="active"><a href="#">Home</a></li>
                                 <li><a href="#about">About</a></li>
-                                <li><a href="#contact">Contact</a></li>
+                                <li><a data-toggle="modal" data-target="#ContactModal">Contact</a></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Categories <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
@@ -65,7 +65,7 @@
         </div>
 
 
-
+        <contact></contact>
 
         <!-- Log In Modal -->
         <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog">
@@ -93,7 +93,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button @click.prevent="login" :disabled="errors.any()" type="button" class="btn btn-primary">Login</button>
                         <div class="login-help">
-                            <a href="#">Register</a> - <a href="#">Forgot Password</a>
+                            <a href="#">Forgot Password</a>
                         </div>
                     </div>
                 </div>
@@ -139,12 +139,14 @@
                         <!--make this a register function-->
                         <button @click.prevent="login" :disabled="errors.any()" type="button" class="btn btn-primary">Register</button>
                         <div class="login-help">
-                            <a href="#">Log In</a> - <a href="#">Forgot Password</a>
+                            <!--<a href="#">Forgot Password</a>-->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </header>
 
 
@@ -153,9 +155,13 @@
 <script>
     import { mapGetters } from 'vuex';
     import { mapActions } from 'vuex';
+    import contact from './Contact.vue';
 
     export default {
         name: 'FlyHeader',
+        components: {
+            'contact': contact
+        },
         data () {
             return {
                 username: '',
@@ -219,6 +225,11 @@
         color: white;
     }
 
+    .header-logo {
+        border-radius: 5px;
+        margin-top: -5px;
+    }
+
     #LoginModal input[type=text], input[type=password],
     #RegisterModal input[type=text], input[type=email], input[type=password] {
         height: 44px;
@@ -272,6 +283,12 @@
 
     .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
         background-color: rgba(150, 50, 50, 0.5);
+    }
+
+    button .navbar-toggle, button .navbar-toggle .collapsed{
+        /* background-color: transparent; */
+        /* background-image: none; */
+        background-color: cornflowerblue;
     }
 
 </style>

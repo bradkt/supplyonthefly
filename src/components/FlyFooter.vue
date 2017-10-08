@@ -1,7 +1,9 @@
 <template>
     <footer>
         <!--<p class="pull-right"><a href="#">Back to top</a></p>-->
-        <p>&copy; 2017 {{ footerText }} Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p>&copy; 2017 {{ footerText }} Inc. &middot;
+            Find Us On: <a href="#">Facebook</a> &amp; <a href="#">Twitter</a>
+        </p>
     </footer>
 </template>
 

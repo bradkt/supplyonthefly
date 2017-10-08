@@ -1,9 +1,14 @@
 <template>
     <section class="container">
         <div>
+            <p :class="{ 'control': true }">
+                <input id="search" v-validate="{ required: true, regex: /^[-\w\s]+$/ }" data-vv-delay="5" v-model="searchTerm"
+                       :class="{'input': true, 'is-danger': errors.has('fullName') }" name="search" type="text" placeholder="Search">
+                <p v-show="errors.has('search')" class="help is-danger">Searches should contain Letters and Numbers only</p>
+            </p>
             <!--<icon name="language" scale="3"></icon>-->
         </div>
-        <div v-for="product in products" class="productInList">
+        <div v-for="product in filteredProducts" class="productInList">
             <img class="pull-left" src="http://via.placeholder.com/218x218" alt="Generic placeholder image" width="218" height="218">
             <router-link
                     :to="{ name: 'ProductSingle', params: { product: product } }"
@@ -46,6 +51,7 @@
                     "Autem imperdiet mnesarchum cum ea. Ad mea dicat omnes, iuvaret convenire percipitur an eum, offendit quaestio ocurreret per ea. Denique officiis praesent at eos, per natum quidam tritani ex. Ex vix eirmod periculis corrumpit." }
                 ],
                 publishImmediatly: false,
+                searchTerm: "",
             }
         },
 
@@ -53,6 +59,11 @@
             ...mapGetters({
                 getIsLoggedIn: 'getIsLoggedIn',
             }),
+            filteredProducts() {
+                return this.products.filter((product) => {
+                    return product.title.match(new RegExp(this.searchTerm, 'i'));
+                })
+            }
         },
         methods: {
             ...mapActions({
