@@ -11,7 +11,7 @@
             <span v-else class="">
                 <span class="btn">Log in To Purchase Cart</span>
             </span>
-            <!--<icon name="language" scale="3"></icon>-->
+
         </div>
         <div v-for="product in getCart" class="productInCart">
             <img class="pull-left" src="http://via.placeholder.com/218x218" alt="Generic placeholder image" width="218" height="218">

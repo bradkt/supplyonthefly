@@ -4,41 +4,59 @@
     <hr class="featurette-divider">
 
     <div class="container marketing">
-
-      <!-- Three columns of text below the carousel -->
       <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="http://via.placeholder.com/200x200" alt="Generic placeholder image" width="200" height="200">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+        <h2>Browse. Work. Play. Products to fit every need</h2>
+      </div>
+      <div class="row">
+
+        <div class="col-lg-2">
+          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+          <h2>Monitors</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="http://via.placeholder.com/200x200" alt="Generic placeholder image" width="200" height="200">
-          <h2>Heading</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+
+        <div class="col-lg-2">
+          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+          <h2>Printers</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="http://via.placeholder.com/200x200" alt="Generic placeholder image" width="200" height="200">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+
+        <div class="col-lg-2">
+          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+          <h2>Keyboards</h2>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-lg-2">
+          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+          <h2>Monitors</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-2">
+          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+          <h2>Printers</h2>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-2">
+          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+          <h2>Keyboards</h2>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+
+
+
       </div><!-- /.row -->
-
-
-      <!-- START THE FEATURETTES -->
 
       <hr class="featurette-divider">
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Products so Fabulous <span class="text-muted">It may blow your mind.</span></h2>
+          <p class="lead">Supply On the Fly sells only the highest quality products from the most respected brands. You except the best, so that's what you will get from us.</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/300x300" alt="Generic placeholder image">
+          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/250x250" alt="Generic placeholder image">
         </div>
       </div>
 
@@ -46,11 +64,11 @@
 
       <div class="row featurette">
         <div class="col-md-7 col-md-push-5">
-          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Shipping so fast <span class="text-muted">You will question how it's possible</span></h2>
+          <p class="lead">We get it, you do not place orders for product you would like to use one day, it's because you need it... and you need it now. Supply On The Fly has you covered with the quickest delivery in the business.</p>
         </div>
         <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/300x300" alt="Generic placeholder image">
+          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/250x250" alt="Generic placeholder image">
         </div>
       </div>
 
@@ -58,11 +76,11 @@
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Hassle Free Shopping. <span class="text-muted"> Because you just found out that you need this one not that one.</span></h2>
+          <p class="lead">If you find that for any reason that you do not want to keep an item return it at no additional cost.</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/300x300" alt="Generic placeholder image">
+          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/250x250" alt="Generic placeholder image">
         </div>
       </div>
 

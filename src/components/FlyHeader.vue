@@ -16,7 +16,8 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#"><img class="img-responsive header-logo" src="../assets/supply-on-the-fly-logo-350.png" alt="SOTF Logo" width="200" height="30"></a>
+                            <a class="navbar-brand" href="#"><img class="img-responsive header-logo" src="~../assets/supply-on-the-fly-logo-350.png"
+                                                                  alt="SOTF Logo" width="200" height="30"></a>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
@@ -34,29 +35,26 @@
                                         </router-link>
                                     </ul>
                                 </li>
-                            </ul>
-                            <div v-if="!getIsLoggedIn">
-                                <button type="button" class="btn" data-toggle="modal" data-target="#LoginModal">
-                                    Log In
-                                </button>
-                                <button type="button" class="btn" data-toggle="modal" data-target="#RegisterModal">
-                                    Register
-                                </button>
-                            </div>
-                            <div v-else class="menu-icons">
-                                <router-link
-                                        :to="{ name: 'FlyCart' }"
-                                        tag="a"
-                                        >
-                                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                                </router-link>
-                                <a href="#">
+                                <li class="space">|</li>
+                                <li v-if="!getIsLoggedIn"><a data-toggle="modal" data-target="#LoginModal">Log In</a></li>
+                                <li v-if="!getIsLoggedIn"><a data-toggle="modal" data-target="#RegisterModal">Register</a></li>
+                                <li v-if="getIsLoggedIn" class="menu-icons">
+                                  <router-link
+                                  :to="{ name: 'FlyCart' }"
+                                  tag="a">
+                                  <icon name="shopping-cart" scale="2"></icon>
+                                  </router-link>
+                                </li>
 
-                                </a>
-                                <a @click.prevent="logout" alt="Log Out">
-                                    <span class="glyphicon glyphicon-user"></span>
-                                </a>
-                            </div>
+                                <li v-if="getIsLoggedIn" class="dropdown menu-icons">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><icon name="user-circle" scale="2"></icon></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                          <a @click.prevent="logout">Logout</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </nav>
@@ -64,88 +62,14 @@
             </div>
         </div>
 
+<!-- Log In Modal -->
+    <login></login>
 
-        <contact></contact>
+<!-- Register Modal -->
+    <register></register>
 
-        <!-- Log In Modal -->
-        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">Login to Your Account</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <form>
-                            <p :class="{ 'control': true }">
-                                <input id="login-email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('login-email') }" name="login-email" type="text" placeholder="Email">
-                                <span v-show="errors.has('login-email')" class="help is-danger">{{ errors.first('login-email') }}</span>
-                            </p>
-                            <p :class="{ 'control': true }">
-                                <input id="login-password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('login-password') }" name="login-password" type="text" placeholder="Password">
-                                <span v-show="errors.has('login-password')" class="help is-danger">{{ errors.first('login-password') }}</span>
-                            </p>
-                        </form>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button @click.prevent="login" :disabled="errors.any()" type="button" class="btn btn-primary">Login</button>
-                        <div class="login-help">
-                            <a href="#">Forgot Password</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Register Modal -->
-        <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">Register An Account</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-
-                            <p :class="{ 'control': true }">
-                                <input id="firstName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('firstName') }" name="firstName" type="text" placeholder="First Name">
-                                <span v-show="errors.has('firstName')" class="help is-danger">{{ errors.first('firstName') }}</span>
-                            </p>
-
-                            <p :class="{ 'control': true }">
-                                <input id="lastName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('lastName') }" name="lastName" type="text" placeholder="Last Name">
-                                <span v-show="errors.has('lastName')" class="help is-danger">{{ errors.first('lastName') }}</span>
-                            </p>
-
-                            <p :class="{ 'control': true }">
-                                <input id="email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }" name="email" type="text" placeholder="Email">
-                                <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
-                            </p>
-                            <p :class="{ 'control': true }">
-                                <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }" name="password" type="text" placeholder="Password">
-                                <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
-                            </p>
-                        </form>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <!--make this a register function-->
-                        <button @click.prevent="login" :disabled="errors.any()" type="button" class="btn btn-primary">Register</button>
-                        <div class="login-help">
-                            <!--<a href="#">Forgot Password</a>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<!--Contact Modal-->
+     <contact></contact>
 
     </header>
 
@@ -155,43 +79,40 @@
 <script>
     import { mapGetters } from 'vuex';
     import { mapActions } from 'vuex';
+    import login from './Login.vue';
+    import register from './Register.vue';
     import contact from './Contact.vue';
 
     export default {
         name: 'FlyHeader',
         components: {
-            'contact': contact
+            'login': login,
+            'register': register,
+            'contact': contact,
         },
         data () {
             return {
-                username: '',
-                password: '',
                 headerText: "Supply On The Fly",
                 publishImmediatly: false,
                 categories: {Category1: "Monitors", Category2: "Computer", Category3: "Staples", Category4: "pens",
                     Category5: "printer", Category6: "Notebooks"},
                 }
         },
-        created() {
-//                this.$http.get('http://api.openweathermap.org/data/2.5/weather?zip=43215,us&appid=36fb15a33bffa22b2734ce51bdf39239')
-//                    .then(
-//                        response => response.json(),
-//                        response => alert("error")
-//                    )
-//                    .then(value => this.categories = value);
+        created: function () {
+
         },
         computed: {
             ...mapGetters({
                 getIsLoggedIn: 'getIsLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal'
-            })
+            }),
         },
         methods: {
             ...mapActions({
                 login: 'login',
                 logout: 'logout',
-            })
+            }),
         }
     }
 </script>
@@ -200,7 +121,7 @@
 
     header {
         width: 100%;
-        background: url("../assets/sotf-image-header.jpg") center center no-repeat;
+        background: url("http://www.freerangehacks.com/supplyOnTheFly/images/sotf-image-header.jpg") center center no-repeat;
         background-size: cover;
     }
 
@@ -230,42 +151,17 @@
         margin-top: -5px;
     }
 
-    #LoginModal input[type=text], input[type=password],
-    #RegisterModal input[type=text], input[type=email], input[type=password] {
-        height: 44px;
-        font-size: 16px;
-        width: 100%;
-        margin-bottom: 10px;
-        /*background: #fff;*/
-        border: 1px solid #d9d9d9;
-        border-top: 1px solid #c0c0c0;
-        padding: 0 8px;
-        box-sizing: border-box;
+    .menu-icons {
+        margin: -10px 0px 0 0px;
     }
 
-    #LoginModal input[type=text]:hover, input[type=password]:hover
-    #RegisterModal input[type=text]:hover, input[type=email]:hover, input[type=password]:hover {
-        border: 1px solid #b9b9b9;
-        border-top: 1px solid #a0a0a0;
-        -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-        -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    .space {
+      display: block;
+      width: 50px;
     }
 
-    .modal-footer {
-        text-align: center;
-    }
-
-    .modal-footer button, .modal-footer .login-help {
-        margin: 15px 0 0 0;
-    }
-
-    .menu-icons span {
-        margin: 10px 15px 0 15px;
-    }
-
-    .glyphicon {
-        font-size: 30px;
+    .fa-icon {
+        margin: 10px 10px;
     }
 
     .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
@@ -285,10 +181,21 @@
         background-color: rgba(150, 50, 50, 0.5);
     }
 
-    button .navbar-toggle, button .navbar-toggle .collapsed{
-        /* background-color: transparent; */
-        /* background-image: none; */
-        background-color: cornflowerblue;
+    button.navbar-toggle, button.navbar-toggle.collapsed{
+        background-color: rgba(255,255,255,.6);
+        transform-origin: 4px 0px;
+        border: solid #ffffff 1px;
+    }
+
+    .icon-bar {
+        width: 30px;
+        height: 2px;
+        background-color: rgba(92,92,92,.9);
+        margin: 4px 0;
+    }
+
+    header .navbar-wrapper .navbar-static-top .container[data-v-aa5c1a1a] {
+        background-color: rgba(50, 50, 50, 0.7);
     }
 
 </style>

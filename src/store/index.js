@@ -57,6 +57,7 @@ export default new Vuex.Store({
         addToCart(state, payload) {
             if (state.cart.items.length == 0 ) {
                 payload["quantity"] = 1;
+                payload["inStock"] -= 1;
                 state.cart.items.push(payload);
             } else {
                 let foundInCart = false;

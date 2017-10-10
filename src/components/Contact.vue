@@ -11,8 +11,8 @@
 
           <form>
             <p :class="{ 'control': true }">
-              <input id="contact-email" v-validate="'required|email'" data-vv-delay="300" v-model="email"
-                     :class="{'input': true, 'is-danger': errors.has('contact-email') }" name="contact-email" type="text" placeholder="Email">
+              <input id="contact-email" v-validate="'required|email'" v-model="email"
+                     :class="{'input': true, 'is-danger': errors.has('contact-email') }" name="contact-email" type="text" placeholder="Email" autofocus>
               <span v-show="errors.has('contact-email')" class="help is-danger">{{ errors.first('contact-email') }}</span>
             </p>
             <p :class="{ 'control': true }">
@@ -25,14 +25,12 @@
                         :class="{'input': true, 'is-danger': errors.has('comment') }" name="comment" type="text" placeholder="Comment"></textarea>
               <span v-show="errors.has('comment')" class="help is-danger">Comments should contain Letters and Numbers only</span>
             </p>
-
-
           </form>
 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button @click.prevent="submit" :disabled="errors.any()" type="button" class="btn btn-primary">Submit</button>
+          <button @click.prevent="submit" :disabled="isDisabled" type="button" class="btn btn-primary">Submit</button>
           <div class="login-help">
             <p>{{ Text }}</p>
           </div>
@@ -46,11 +44,20 @@
     export default {
         data() {
             return {
-                Text: "Supply On The Fly",
-                email: "",
-                name: "",
-                flyMessage: "",
+                Text: 'Supply On The Fly',
+                email: '',
+                name: '',
+                flyMessage: '',
             };
+        },
+        created: function () {
+
+        },
+        computed: {
+            isDisabled(){
+                return this.errors.any();
+
+            }
         },
         methods: {
             submit() {

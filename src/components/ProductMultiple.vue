@@ -6,10 +6,9 @@
                        :class="{'input': true, 'is-danger': errors.has('fullName') }" name="search" type="text" placeholder="Search">
                 <p v-show="errors.has('search')" class="help is-danger">Searches should contain Letters and Numbers only</p>
             </p>
-            <!--<icon name="language" scale="3"></icon>-->
         </div>
         <div v-for="product in filteredProducts" class="productInList">
-            <img class="pull-left" src="http://via.placeholder.com/218x218" alt="Generic placeholder image" width="218" height="218">
+            <img class="pull-left img-responsive" src="http://via.placeholder.com/218x218" alt="Generic placeholder image" width="218" height="218">
             <router-link
                     :to="{ name: 'ProductSingle', params: { product: product } }"
                     tag="h4"
@@ -20,7 +19,7 @@
             <h5>In Stock: {{ product.inStock }}</h5>
             <!--<p>{{ product.description }}</p>-->
             <button @click.prevent="addToCart(product)">Add To Cart</button>
-            <button @click.prevent="removeFromCart(product)">Remove From Cart</button>
+            <!--<button @click.prevent="removeFromCart(product)">Remove From Cart</button>-->
         </div>
     </section>
 </template>
@@ -50,7 +49,6 @@
                     "\n" +
                     "Autem imperdiet mnesarchum cum ea. Ad mea dicat omnes, iuvaret convenire percipitur an eum, offendit quaestio ocurreret per ea. Denique officiis praesent at eos, per natum quidam tritani ex. Ex vix eirmod periculis corrumpit." }
                 ],
-                publishImmediatly: false,
                 searchTerm: "",
             }
         },
@@ -68,7 +66,7 @@
         methods: {
             ...mapActions({
                 addToCart: "addToCart",
-                removeFromCart: 'removeFromCart'
+//                removeFromCart: 'removeFromCart'
             }),
             auth: function(){
                 this.$http.get('http://api.openweathermap.org/data/2.5/weather?zip=43215,us&appid=36fb15a33bffa22b2734ce51bdf39239')
@@ -86,9 +84,15 @@
 <style scoped>
 
     section {
+        width: 70%;
         margin: 20px auto 0 auto;
         text-align: center;
         font-family: Helvetica, sans-serif;
+    }
+
+    #search {
+        height: 35px;
+        width: 50%;
     }
 
     .productInList {
@@ -99,6 +103,12 @@
 
     .product-title {
         margin-top: 25px;
+    }
+
+    @media only screen and (max-width: 745px) {
+        section {
+            width: 95%;
+        }
     }
 
 </style>

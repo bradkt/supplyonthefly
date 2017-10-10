@@ -1,7 +1,7 @@
 <template>
     <section>
         <div>
-            <img class="" src="http://via.placeholder.com/250x250" alt="Generic placeholder image" width="250" height="250">
+            <img class="img-responsive" src="http://via.placeholder.com/250x250" alt="Generic placeholder image" width="250" height="250">
         </div>
         <div>
             <h2>{{ product.title }}</h2>
@@ -56,11 +56,16 @@
 <style scoped>
 
     section {
-        margin-top: 20px;
+        margin: 40px auto;
+        width: 70%;
         text-align: center;
         font-family: Helvetica, sans-serif;
     }
 
-
+    @media only screen and (max-width: 745px) {
+        section {
+            width: 95%;
+        }
+    }
 
 </style>
