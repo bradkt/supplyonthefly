@@ -11,24 +11,24 @@
 
             <p :class="{ 'control': true }">
               <input id="firstName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('firstName') }"
-                     name="firstName" type="text" placeholder="First Name" v-model="firstName" autofocus>
+                     data-vv-delay="300" name="firstName" type="text" placeholder="First Name" v-model="firstName" required autofocus>
               <span v-show="errors.has('firstName')" class="help is-danger">{{ errors.first('firstName') }}</span>
             </p>
 
             <p :class="{ 'control': false }">
               <input id="lastName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('lastName') }"
-                     name="lastName" type="text" placeholder="Last Name" v-model="lastName">
+                     data-vv-delay="300" name="lastName" type="text" placeholder="Last Name" v-model="lastName" required>
               <span v-show="errors.has('lastName')" class="help is-danger">{{ errors.first('lastName') }}</span>
             </p>
 
             <p :class="{ 'control': true }">
               <input ref="email" id="email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"
-                     name="email" type="text" placeholder="Email" v-model="email">
+                     data-vv-delay="300" name="email" type="text" placeholder="Email" v-model="email" required>
               <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
             </p>
             <p :class="{ 'control': true }">
               <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"
-                     name="password" type="text" placeholder="Password" v-model="password">
+                     data-vv-delay="300" name="password" type="text" placeholder="Password" v-model="password" required>
               <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
             </p>
           </form>
@@ -50,7 +50,7 @@
 <script>
 
     export default {
-        name: 'Register',
+//        name: 'Register',
         data () {
             return {
                 email: '',
@@ -65,7 +65,7 @@
         },
         computed: {
             isDisabled(){
-                return this.errors.any();
+                return this.errors.any() || this.email === '';
             }
         },
         methods: {

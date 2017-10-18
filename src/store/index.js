@@ -13,7 +13,7 @@ export default new Vuex.Store({
         },
     },
     getters: {
-        getIsLoggedIn: (state, getters) => {
+        isLoggedIn: (state, getters) => {
             return state.isLoggedIn;
         },
         getCart: (state, getters) => {

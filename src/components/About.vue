@@ -2,7 +2,7 @@
   <section>
     <!-- First Container -->
     <div class="container-fluid bg-1 text-center">
-      <h3>Our mission is to provide all your office supply needs at a competitive price with the fastest shipping in the industry.</h3>
+      <h3 class="mission text-center">Our mission is to provide all your office supply needs at a competitive price with the fastest shipping in the industry.</h3>
     </div>
 
     <!-- Second Container -->
@@ -16,7 +16,7 @@
 
     <!-- Third Container (Grid) -->
     <div class="container-fluid bg-3 text-center">
-      <h3 class="margin">Where To Us?</h3><br>
+      <h3 class="margin">Where To Find Us?</h3><br>
       <div class="row">
         <div class="col-sm-4 social-1">
           <h1>Facebook</h1>
@@ -50,9 +50,9 @@
 
 <style scoped>
 
-  section {
-
-
+  .mission {
+    width: 80%;
+    margin: 5px auto;
   }
 
   .header-image {
@@ -74,6 +74,10 @@
   .bg-2 {
     background-color: #474e5d; /* Dark Blue */
     color: #ffffff;
+  }
+  .bg-2 p {
+    width: 85%;
+    margin: 45px auto 5px auto;
   }
   .bg-3 {
     background-color: #ffffff; /* White */

@@ -23,8 +23,8 @@
                             <ul class="nav navbar-nav">
                                 <li class="active"><a href="#">Home</a></li>
                                 <li><a href="#about">About</a></li>
-                                <li><a data-toggle="modal" data-target="#ContactModal">Contact</a></li>
-                                <li class="dropdown">
+                                <li><a data-toggle="modal" data-target="#ContactModal" class="menu-item">Contact</a></li>
+                                <li class="dropdown menu-item">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Categories <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <router-link v-for="category in categories"
@@ -36,9 +36,9 @@
                                     </ul>
                                 </li>
                                 <li class="space">|</li>
-                                <li v-if="!getIsLoggedIn"><a data-toggle="modal" data-target="#LoginModal">Log In</a></li>
-                                <li v-if="!getIsLoggedIn"><a data-toggle="modal" data-target="#RegisterModal">Register</a></li>
-                                <li v-if="getIsLoggedIn" class="menu-icons">
+                                <li v-if="!isLoggedIn" class="menu-item"><a data-toggle="modal" data-target="#LoginModal">Log In</a></li>
+                                <li v-if="!isLoggedIn" class="menu-item"><a data-toggle="modal" data-target="#RegisterModal">Register</a></li>
+                                <li v-if="isLoggedIn" class="menu-icons">
                                   <router-link
                                   :to="{ name: 'FlyCart' }"
                                   tag="a">
@@ -46,7 +46,7 @@
                                   </router-link>
                                 </li>
 
-                                <li v-if="getIsLoggedIn" class="dropdown menu-icons">
+                                <li v-if="isLoggedIn" class="dropdown menu-icons">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><icon name="user-circle" scale="2"></icon></a>
                                     <ul class="dropdown-menu">
                                         <li>
@@ -86,6 +86,7 @@
     export default {
         name: 'FlyHeader',
         components: {
+//            isLoggedIn: this.isLoggedIn,
             'login': login,
             'register': register,
             'contact': contact,
@@ -94,25 +95,45 @@
             return {
                 headerText: "Supply On The Fly",
                 publishImmediatly: false,
-                categories: {Category1: "Monitors", Category2: "Computer", Category3: "Staples", Category4: "pens",
-                    Category5: "printer", Category6: "Notebooks"},
+                categories: "",
                 }
         },
         created: function () {
+//            isDisabled: true;
+            let date = new Date;
+            date.setDate(date.getDate() + 1);
+            this.$cookies.set("token","SupplyOnTheFly", date);
 
+            // uncomment here to make request to get categories
+            this.getCategories();
         },
         computed: {
             ...mapGetters({
-                getIsLoggedIn: 'getIsLoggedIn',
+                isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal'
             }),
+
         },
         methods: {
             ...mapActions({
                 login: 'login',
                 logout: 'logout',
             }),
+            //this.$http.get('/someUrl', [options]).then(successCallback, errorCallback);
+            getCategories(){
+                this.$http.get('http://supplyonthefly.business:8080/capstone-website-api/product/category')
+                    .then(response => {
+                        console.log(response);
+                    }, response => {
+                        console.log(response);
+                    })
+//                    .then(console.log("done"))
+//                    .then(response => response.json(), response => alert("---error----"))
+//                    .then(value => this.categories = value);
+
+//                    console.log(this.categories);
+            },
         }
     }
 </script>
@@ -121,7 +142,7 @@
 
     header {
         width: 100%;
-        background: url("http://www.freerangehacks.com/supplyOnTheFly/images/sotf-image-header.jpg") center center no-repeat;
+        background: url("http://www.supplyOnTheFly.site/images/sotf-image-header.jpg") center center no-repeat;
         background-size: cover;
     }
 
@@ -155,6 +176,10 @@
         margin: -10px 0px 0 0px;
     }
 
+    .menu-icons:hover, .menu-item:hover {
+        cursor: pointer;
+    }
+
     .space {
       display: block;
       width: 50px;
@@ -170,7 +195,7 @@
     }
 
     .nav > li > a:hover, .nav > li > a:focus {
-        background-color: rgba(150, 50, 50, 0.3);
+        background-color: rgba(150, 150, 150, 0.3);
     }
 
     .dropdown-menu {
@@ -178,7 +203,7 @@
     }
 
     .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-        background-color: rgba(150, 50, 50, 0.5);
+        background-color: rgba(150, 150, 150, 0.5);
     }
 
     button.navbar-toggle, button.navbar-toggle.collapsed{

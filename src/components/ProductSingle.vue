@@ -26,13 +26,14 @@
         name: 'ProductSingle',
         data () {
             return {
+                isLoggedIn: this.isLoggedIn,
                 publishImmediatly: false,
             }
         },
 
         computed: {
             ...mapGetters({
-                getIsLoggedIn: 'getIsLoggedIn',
+                isLoggedIn: 'isLoggedIn',
             })
         },
         methods: {

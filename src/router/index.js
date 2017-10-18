@@ -5,6 +5,7 @@ import ProductMultiple from '../components/ProductMultiple.vue'
 import ProductSingle from '../components/ProductSingle.vue'
 import FlyCart from '../components/SOTFlyCart.vue'
 import About from '../components/About.vue'
+import Portal from '../components/Portal.vue'
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
           path: '/about',
           name: 'About',
           component: About,
+      },
+      {
+          path: '/employee_portal',
+          name: 'Portal',
+          component: Portal,
       },
       { path: '*',
         component: { template: '<h1>Page is not Found!</h1>'}

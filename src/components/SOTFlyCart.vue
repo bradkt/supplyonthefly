@@ -2,7 +2,7 @@
     <section class="container">
         <div class="cart-summary">
             <span>{{ Title }}</span>
-            <span v-if="getIsLoggedIn">
+            <span v-if="isLoggedIn">
                 <span>Product Total: {{ getCartTotal.toFixed(2) }}</span>
                 <button type="button" class="btn" data-toggle="modal" data-target="#CheckoutModal">
                     Purchase
@@ -100,19 +100,42 @@
         name: "FlyCart",
         data() {
             return {
+//                isLoggedIn: this.isLoggedIn,
                 Title: "Brad's Cart",
                 products: [],
                 productTotal: "",
                 saleTotal: "",
+
             };
         },
-        ready: function() {
+        created(){
+            console.log(this.isLoggedIn);
+
+        },
+
+        beforeRouteEnter(to, from, next){
+            next(vm => {
+                if(!vm.isLoggedIn){
+                    return next('/');
+                }
+            })
+
+        },
+        beforeRouteLeave(to, from, next){
+            next();
+//            if (product.length > 0) {
+//                let leaveCart = confirm('Are you sure you want to leave your cart before purchase');
+//            }
+//
+//            if (leaveCart == true){
+//                next();
+//            }
 
 
         },
         computed: {
             ...mapGetters({
-                getIsLoggedIn: 'getIsLoggedIn',
+                isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal',
             }),

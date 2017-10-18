@@ -11,7 +11,7 @@
 
           <form>
             <p :class="{ 'control': true }">
-              <input id="contact-email" v-validate="'required|email'" v-model="email"
+              <input id="contact-email" v-validate="'required|email'" data-vv-delay="300" v-model="email"
                      :class="{'input': true, 'is-danger': errors.has('contact-email') }" name="contact-email" type="text" placeholder="Email" autofocus>
               <span v-show="errors.has('contact-email')" class="help is-danger">{{ errors.first('contact-email') }}</span>
             </p>
@@ -21,7 +21,7 @@
               <span v-show="errors.has('fullName')" class="help is-danger">Names should contain Letters and Numbers only</span>
             </p>
             <p :class="{ 'control': true }">
-              <textarea id="comment" v-validate="{ required: true, regex: /^[-\w\s]+$/ }" data-vv-delay="700" v-model="flyMessage"
+              <textarea id="comment" v-validate="{ required: true, regex: /^[-\w\s]+$/ }" data-vv-delay="300" v-model="flyMessage"
                         :class="{'input': true, 'is-danger': errors.has('comment') }" name="comment" type="text" placeholder="Comment"></textarea>
               <span v-show="errors.has('comment')" class="help is-danger">Comments should contain Letters and Numbers only</span>
             </p>
@@ -55,7 +55,7 @@
         },
         computed: {
             isDisabled(){
-                return this.errors.any();
+                return this.errors.any() || this.email === '';
 
             }
         },

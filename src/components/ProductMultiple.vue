@@ -8,7 +8,7 @@
             </p>
         </div>
         <div v-for="product in filteredProducts" class="productInList">
-            <img class="pull-left img-responsive" src="http://via.placeholder.com/218x218" alt="Generic placeholder image" width="218" height="218">
+            <img class="pull-left img-responsive" src="http://via.placeholder.com/300x300" alt="product image">
             <router-link
                     :to="{ name: 'ProductSingle', params: { product: product } }"
                     tag="h4"
@@ -55,7 +55,7 @@
 
         computed: {
             ...mapGetters({
-                getIsLoggedIn: 'getIsLoggedIn',
+                isLoggedIn: 'isLoggedIn',
             }),
             filteredProducts() {
                 return this.products.filter((product) => {
@@ -84,7 +84,7 @@
 <style scoped>
 
     section {
-        width: 70%;
+        width: 90%;
         margin: 20px auto 0 auto;
         text-align: center;
         font-family: Helvetica, sans-serif;
@@ -96,9 +96,15 @@
     }
 
     .productInList {
-        margin: 4px 0;
+        margin: 10px 10px;
         height: 220px;
         border: 1px rgba(50, 50, 50, 0.3) solid;
+        /*width: 45%;*/
+    }
+
+    .productInList img {
+        width: 220px;
+        height: 220px;
     }
 
     .product-title {
@@ -109,6 +115,13 @@
         section {
             width: 95%;
         }
+
+        .productInList {
+            /*margin: 10px 0px;*/
+            /*width: 100%;*/
+        }
     }
+
+
 
 </style>

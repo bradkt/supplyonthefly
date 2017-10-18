@@ -4,47 +4,33 @@
     <hr class="featurette-divider">
 
     <div class="container marketing">
-      <div class="row">
+      <div class="row lead">
         <h2>Browse. Work. Play. Products to fit every need</h2>
       </div>
-      <div class="row">
+      <div class="row category-images">
 
-        <div class="col-lg-2">
-          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+        <div class="col-md-3">
+          <img class="img-circle" src="http://via.placeholder.com/180x180" alt="Generic placeholder image" width="180" height="180">
           <h2>Monitors</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
 
-        <div class="col-lg-2">
-          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+        <div class="col-md-3">
+          <img class="img-circle" src="http://via.placeholder.com/180x180" alt="Generic placeholder image" width="180" height="180">
           <h2>Printers</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
 
-        <div class="col-lg-2">
-          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+        <div class="col-md-3">
+          <img class="img-circle" src="http://via.placeholder.com/180x180" alt="Generic placeholder image" width="180" height="180">
           <h2>Keyboards</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
-        <div class="col-lg-2">
-          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
+        <div class="col-md-3">
+          <img class="img-circle" src="http://via.placeholder.com/180x180" alt="Generic placeholder image" width="180" height="180">
           <h2>Monitors</h2>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
-
-        <div class="col-lg-2">
-          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
-          <h2>Printers</h2>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-
-        <div class="col-lg-2">
-          <img class="img-circle" src="http://via.placeholder.com/110x110" alt="Generic placeholder image" width="110" height="110">
-          <h2>Keyboards</h2>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-
-
 
       </div><!-- /.row -->
 
@@ -63,13 +49,14 @@
       <hr class="featurette-divider">
 
       <div class="row featurette">
-        <div class="col-md-7 col-md-push-5">
+        <div class="col-md-5 col-md-7">
+          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/250x250" alt="Generic placeholder image">
+        </div>
+        <div class="col-md-7 col-md-5">
           <h2 class="featurette-heading">Shipping so fast <span class="text-muted">You will question how it's possible</span></h2>
           <p class="lead">We get it, you do not place orders for product you would like to use one day, it's because you need it... and you need it now. Supply On The Fly has you covered with the quickest delivery in the business.</p>
         </div>
-        <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" src="http://via.placeholder.com/250x250" alt="Generic placeholder image">
-        </div>
+
       </div>
 
       <hr class="featurette-divider">
@@ -93,8 +80,8 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-    import { mapActions } from 'vuex';
+//    import { mapGetters } from 'vuex';
+//    import { mapActions } from 'vuex';
 
 
     export default {
@@ -108,18 +95,18 @@
       },
 
       computed: {
-          ...mapGetters({
-              getIsLoggedIn: 'getIsLoggedIn',
-          }),
+//          ...mapGetters({
+//              isLoggedIn: 'isLoggedIn',
+//          }),
 
 
 
       },
       methods: {
-            ...mapActions({
-                login: 'login',
-                logout: 'logout',
-          }),
+//            ...mapActions({
+//                login: 'login',
+//                logout: 'logout',
+//          }),
 
       }
     }
@@ -128,8 +115,17 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  section {
+  .marketing {
 
   }
+
+  .lead {
+    margin: 15px 0;
+  }
+
+  .category-images {
+
+  }
+
 
 </style>

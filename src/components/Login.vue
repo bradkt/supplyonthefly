@@ -8,15 +8,15 @@
         </div>
         <div class="modal-body">
 
-          <form>
+          <form @submit.prevent="isDisabled">
             <p :class="{ 'control': true }">
               <input ref="email" id="email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"
-                     name="email" type="text" placeholder="Email" v-model="email" autofocus>
+                     name="email" type="text" placeholder="Email" v-model="email" data-vv-delay="200" required autofocus>
               <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
             </p>
             <p :class="{ 'control': true }">
               <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"
-                     name="password" type="text" placeholder="Password" data-vv-delay="200" v-model="password">
+                     name="password" type="text" placeholder="Password" data-vv-delay="200" v-model="password" required>
               <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
             </p>
           </form>
@@ -24,7 +24,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button :disabled="isDisabled" @click.prevent="login" type="submit" class="btn btn-primary">Login</button>
+          <button :disabled="isDisabled" @click.prevent="authLogin" type="submit" class="btn btn-primary">Login</button>
           <div class="login-help">
             <a href="#">Forgot Password</a>
           </div>
@@ -38,13 +38,12 @@
     import { mapActions } from 'vuex';
 
     export default {
-        name: 'Login',
+//        name: 'Login',
         data () {
             return {
                 email: '',
                 password: '',
                 headerText: "Supply On The Fly",
-                publishImmediatly: false,
             }
         },
         created: function () {
@@ -52,14 +51,25 @@
         },
         computed: {
             isDisabled(){
-                return this.errors.any();
-            }
+                return this.errors.any() || this.email === '';
+            },
+
         },
         methods: {
             ...mapActions({
                 login: 'login',
                 logout: 'logout',
             }),
+            authLogin(){
+                console.log("You have logged in");
+//                this.$http.post('http://api.openweathdf39239')
+//                    .then(
+//                        response => response.json(),
+//                        response => alert("error")
+//                    )
+//                    .then(value => this.info = value);
+                this.login();
+            }
         }
     }
 
