@@ -9,7 +9,10 @@ export default new Vuex.Store({
         isLoggedIn: false,
         cart: {
             items: [],
-            total: 0
+            total: 0,
+        },
+        products: {
+            list: [],
         },
     },
     getters: {
@@ -21,29 +24,34 @@ export default new Vuex.Store({
         },
         getCartTotal: (state, getters) => {
             return state.cart.total;
-        }
+        },
+        getProducts: (state, getters) => {
+            return state.products;
+        },
     },
     mutations: {
         login(state) {
+
             state.isLoggedIn = true;
         },
         logout(state) {
+
             state.isLoggedIn = false;
         },
         incrementQuantity(state, payload) {
             state.cart.items.map(function(item, i){
-                if(item.id == payload.id){
-                    item["quantity"] += 1;
-                    item["inStock"] -= 1;
+                if(item.sku == payload.sku){
+                    item["cartQuantity"] += 1;
+                    item["quantity"] -= 1;
                     state.cart.items.splice(i, 1, item);
                 }
             });
         },
         decrementQuantity(state, payload) {
             state.cart.items.map(function(item, i){
-                if(item.id == payload.id){
-                    item["quantity"] -= 1;
-                    item["inStock"] += 1;
+                if(item.sku == payload.sku){
+                    item["cartQuantity"] -= 1;
+                    item["quantity"] += 1;
                     state.cart.items.splice(i, 1, item);
                 }
             });
@@ -51,36 +59,46 @@ export default new Vuex.Store({
         updateCartTotal(state) {
             state.cart.total = 0;
             state.cart.items.map(function(item){
-                state.cart.total += item.quantity * item.price;
+                state.cart.total += item.cartQuantity * item.price;
             });
         },
         addToCart(state, payload) {
             if (state.cart.items.length == 0 ) {
-                payload["quantity"] = 1;
-                payload["inStock"] -= 1;
+                payload["cartQuantity"] = 1;
+                payload["quantity"] -= 1;
                 state.cart.items.push(payload);
             } else {
                 let foundInCart = false;
                 state.cart.items.map(function(item, i){
-                    if(item.id == payload.id) {
-                        item["quantity"] += 1;
-                        item["inStock"] -= 1;
+                    if(item.sku == payload.sku) {
+                        item["cartQuantity"] += 1;
+                        item["quantity"] -= 1;
                         state.cart.items.splice(i, 1, item);
                         foundInCart = true;
                     }
                 });
                 if (!foundInCart) {
-                    payload["quantity"] = 1;
+                    payload["cartQuantity"] = 1;
+                    payload["quantity"] -= 1;
                     state.cart.items.push(payload);
                 }
             }
         },
         removeFromCart(state, payload) {
             state.cart.items.map(function(item, i){
-                if(item.id == payload.id){
+                if(item.sku == payload.sku){
                     state.cart.items.splice(i, 1);
                 }
             });
+        },
+        updateProducts(state, payload) {
+            payload.filter((product, i, self) => {
+                if (product['sku'] !== undefined) {
+                    if (product['sku'] !== self[i + 1]['sku']) {
+                        state.products.list.push(product);
+                    }
+                }
+            })
         },
     },
     actions: {
@@ -105,6 +123,9 @@ export default new Vuex.Store({
         decrementQuantity({state, commit}, product) {
             commit('decrementQuantity', product);
             commit('updateCartTotal');
+        },
+        updateProducts({state, commit}, products) {
+            commit('updateProducts', products);
         },
     }
 })

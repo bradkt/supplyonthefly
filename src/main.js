@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 import store from './store'
-import VueResource from 'vue-resource'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import Header from './components/FlyHeader.vue'
 import Footer from './components/FlyFooter.vue'
 import Icon from '../node_modules/vue-awesome/dist/vue-awesome'
@@ -15,6 +16,8 @@ global.jQuery = jQuery;
 let Bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.js');
 import VeeValidate from 'vee-validate';
 import VueCookies from 'vue-cookies'
+import VueLocalStorage from 'vue-localstorage'
+
 
 
 Vue.config.productionTip = false;
@@ -22,15 +25,19 @@ Vue.component('icon', Icon);
 Vue.component('flyHeader', Header);
 Vue.component('flyFooter', Footer);
 Vue.use(VueCookies);
-Vue.use(VueResource);
+Vue.use(VueAxios, axios);
 Vue.use(VeeValidate);
+Vue.use(VueLocalStorage);
 
-Vue.http.headers.common['Access-Control-Request-Method'] = 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
-Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
+//axios.defaults.baseURL = 'https://api.example.com';
+//axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+// Vue.http.headers.common['Access-Control-Request-Method'] = 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
+// Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 
-Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
-Vue.http.headers.common['Access-Control-Allow-Credentials'] = "true";
-Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*, application/vnd.sun.wadl+xml';
+// Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
+// Vue.http.headers.common['Access-Control-Allow-Credentials'] = "true";
+// Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*, application/vnd.sun.wadl+xml';
+// Vue.http.options.credentials = true;
 /* eslint-disable no-new */
 
 new Vue({

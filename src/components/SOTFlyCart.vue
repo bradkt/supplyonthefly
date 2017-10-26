@@ -19,11 +19,11 @@
                     :to="{ name: 'ProductSingle', params: { product: product } }"
                     tag="h4"
                     class="product-title">
-                <a>{{ product.title }}</a>
+                <a>{{ product.name }}</a>
             </router-link>
             <p>Price: {{ product.price }}</p>
             <p class="quantity-controls">
-                <span>Quantity: {{ product.quantity }}</span>
+                <span>Quantity: {{ product.cartQuantity }}</span>
                 <span @click="incrementQuantity(product)" class="glyphicon glyphicon-circle-arrow-up"></span>
                 <span @click="decrementQuantity(product)" class="glyphicon glyphicon-circle-arrow-down"></span>
             </p>
@@ -51,30 +51,30 @@
                       <form action="#">
 
                         <p :class="{ 'control': true }">
-                        <input v-validate="'required|credit_card'" :class="{'input': true, 'is-danger': errors.has('credit_card') }"
-                               data-vv-delay="700" name="creditCard" type="text" placeholder="Credit Card Number">
+                        <input v-validate="'required|credit_card'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="creditCard"
+                               data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number">
                         <span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number</span>
                         </p>
                         <p :class="{ 'control': true }">
-                          <input v-validate="'required|date_format:MM/YY'" data-vv-delay="700"
+                          <input v-validate="'required|date_format:MM/YY'" data-vv-delay="200" v-model="dateExpire"
                                  :class="{'input': true, 'is-danger': errors.has('expiry') }" name="expiry" type="text" placeholder="MM/YY of Expiration">
                           <span v-show="errors.has('expiry')" class="help is-danger">Please Enter A Valid Month/Year</span>
                         </p>
                         <p :class="{ 'control': true }">
                           <input id="fullName" v-validate="'required|alpha_spaces'" :class="{'input': true, 'is-danger': errors.has('fullName') }"
-                                 data-vv-delay="700" name="fullName" type="text" placeholder="Name As Appears On Card">
+                                 v-model="nameOnCard" data-vv-delay="200" name="fullName" type="text" placeholder="Name As Appears On Card">
                           <span v-show="errors.has('fullName')" class="help is-danger">{{ errors.first('fullName') }}</span>
                         </p>
 
                         <p :class="{ 'control': true }">
-                          <input id="cvv" v-validate="{rules: { regex:  /^[0-9]{3,4}$/}, required: true }" data-vv-delay="700"
+                          <input id="cvv" v-validate="{rules: { regex:  /^[0-9]{3,4}$/}, required: true }" data-vv-delay="200"
                                  :class="{'input': true, 'is-danger': errors.has('cvv') }"
-                                 name="cvv" type="text" placeholder="CVV">
+                                 v-model="cvv" name="cvv" type="text" placeholder="CVV">
                           <span v-show="errors.has('cvv')" class="help is-danger">{{ errors.first('cvv') }}</span>
                         </p>
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button @click.prevent="submitPayment" type="button" :disabled="errors.any()" class="btn btn-primary">Make Payment</button>
+                        <button @click.prevent="submitPayment" type="button" :disabled="isDisabled" class="btn btn-primary">Make Payment</button>
 
                       </form>
                     </div>
@@ -100,38 +100,51 @@
         name: "FlyCart",
         data() {
             return {
-//                isLoggedIn: this.isLoggedIn,
                 Title: "Brad's Cart",
-                products: [],
-                productTotal: "",
-                saleTotal: "",
+//                products: [],
+                productTotal: '',
+                saleTotal: '',
+                creditCard: '',
+                cvv: '',
+                dateExpire: '',
+                nameOnCard: '',
 
             };
         },
         created(){
-            console.log(this.isLoggedIn);
-
+            if (this.getCart.length === 0) {
+                let loadCart = confirm('load previous cart');
+                if(loadCart && this.$localStorage.get('myCart')){
+                    var items = JSON.parse(this.$localStorage.get('myCart'))
+                    items.map(function(item){
+                        console.log(item);
+                        this.$store.addToCart(item);
+                    });
+                } else {
+                    alert('Unable to recover previous cart.');
+                }
+            }
         },
-
         beforeRouteEnter(to, from, next){
             next(vm => {
                 if(!vm.isLoggedIn){
                     return next('/');
                 }
-            })
+            });
 
         },
         beforeRouteLeave(to, from, next){
+            console.log(this.getCart.length);
+            if (this.getCart.length > 0) {
+                let leaveCart = confirm('Are you sure you want to leave your cart before purchase');
+                if(leaveCart){
+                    let cartString = JSON.stringify(this.getCart);
+                    this.$localStorage.set('myCart', cartString);
+                    next();
+                }
+//                this.localStorage.get('someNumber')
+            }
             next();
-//            if (product.length > 0) {
-//                let leaveCart = confirm('Are you sure you want to leave your cart before purchase');
-//            }
-//
-//            if (leaveCart == true){
-//                next();
-//            }
-
-
         },
         computed: {
             ...mapGetters({
@@ -139,6 +152,9 @@
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal',
             }),
+            isDisabled(){
+                return this.errors.any() || this.creditCard === '';
+            },
         },
         methods: {
             ...mapActions({
@@ -149,6 +165,8 @@
             }),
             submitPayment() {
                 console.log(this.productTotal, this.saleTotal);
+
+
             },
         }
     }

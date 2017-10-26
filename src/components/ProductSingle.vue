@@ -42,12 +42,9 @@
                 removeFromCart: 'removeFromCart'
             }),
             auth: function(){
-                this.$http.get('http://api.openweathermap.org/data/2.5/weather?zip=43215,us&appid=36fb15a33bffa22b2734ce51bdf39239')
-                    .then(
-                        response => response.json(),
-                        response => alert("error")
-                    )
-                    .then(value => this.info = value);
+                this.axios.get('').then((response) => {
+                    console.log(response.data)
+                })
             }
         }
     }

@@ -24,7 +24,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button :disabled="isDisabled" @click.prevent="authLogin" type="submit" class="btn btn-primary">Login</button>
+          <button :disabled="isDisabled" @click.prevent="authUser" type="submit" class="btn btn-primary">Login</button>
           <div class="login-help">
             <a href="#">Forgot Password</a>
           </div>
@@ -60,15 +60,23 @@
                 login: 'login',
                 logout: 'logout',
             }),
-            authLogin(){
-                console.log("You have logged in");
-//                this.$http.post('http://api.openweathdf39239')
-//                    .then(
-//                        response => response.json(),
-//                        response => alert("error")
-//                    )
-//                    .then(value => this.info = value);
-                this.login();
+            authUser() {
+                this.axios.get(
+                    'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
+                    {auth: {
+                        username: "user@email.com",
+                        password: "password",
+                    }
+                }
+                ).then((response) => {
+                            console.log(response);
+                            this.login();
+                            jQuery('#LoginModal').modal('hide');
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
             }
         }
     }

@@ -1,0 +1,11 @@
+// products: [
+//     { id: 111, title: "Samsung tv", inStock: 30, price: "399.99", category: "tv", description: "Lorem ipsum dolor sit amet, an nec disputando suscipiantur, graece consetetur at cum. Usu in saepe discere intellegam, audire perpetua cu vim, est impedit erroribus philosophia et. Porro volumus ne quo. An altera voluptaria mea, his id graeci similique. In per dico illum detraxit, diam erat senserit ut duo, cu populo tractatos complectitur est.\n" +
+//     "\n" +
+//     "Autem imperdiet mnesarchum cum ea. Ad mea dicat omnes, iuvaret convenire percipitur an eum, offendit quaestio ocurreret per ea. Denique officiis praesent at eos, per natum quidam tritani ex. Ex vix eirmod periculis corrumpit." },
+//     { id: 222, title: "Lenovo Labtop", inStock: 30, price: "799.99", category: "computers", description: "Lorem ipsum dolor sit amet, an nec disputando suscipiantur, graece consetetur at cum. Usu in saepe discere intellegam, audire perpetua cu vim, est impedit erroribus philosophia et. Porro volumus ne quo. An altera voluptaria mea, his id graeci similique. In per dico illum detraxit, diam erat senserit ut duo, cu populo tractatos complectitur est.\n" +
+//     "\n" +
+//     "Autem imperdiet mnesarchum cum ea. Ad mea dicat omnes, iuvaret convenire percipitur an eum, offendit quaestio ocurreret per ea. Denique officiis praesent at eos, per natum quidam tritani ex. Ex vix eirmod periculis corrumpit." },
+//     { id: 333, title: "Sony Headphones", inStock: 30, price: "89.99", category: "headphones", description: "Lorem ipsum dolor sit amet, an nec disputando suscipiantur, graece consetetur at cum. Usu in saepe discere intellegam, audire perpetua cu vim, est impedit erroribus philosophia et. Porro volumus ne quo. An altera voluptaria mea, his id graeci similique. In per dico illum detraxit, diam erat senserit ut duo, cu populo tractatos complectitur est.\n" +
+//     "\n" +
+//     "Autem imperdiet mnesarchum cum ea. Ad mea dicat omnes, iuvaret convenire percipitur an eum, offendit quaestio ocurreret per ea. Denique officiis praesent at eos, per natum quidam tritani ex. Ex vix eirmod periculis corrumpit." }
+// ],

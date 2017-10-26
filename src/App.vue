@@ -7,9 +7,22 @@
 </template>
 
 <script>
-export default {
-  name: 'app',
-}
+
+  import { mapActions } from 'vuex';
+
+  export default {
+      name: 'app',
+      created: function () {
+          this.axios.get('http://supplyonthefly.business:8080/capstone-website-api/product').then((response) => {
+              this.updateProducts(response.data.productList);
+          });
+      },
+      methods: {
+          ...mapActions({
+              updateProducts: "updateProducts",
+          }),
+      }
+  }
 </script>
 
 <style>

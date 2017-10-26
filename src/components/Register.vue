@@ -11,25 +11,55 @@
 
             <p :class="{ 'control': true }">
               <input id="firstName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('firstName') }"
-                     data-vv-delay="300" name="firstName" type="text" placeholder="First Name" v-model="firstName" required autofocus>
+                     data-vv-delay="300" name="firstName" type="text" placeholder="First Name" v-model="user.firstName" required autofocus>
               <span v-show="errors.has('firstName')" class="help is-danger">{{ errors.first('firstName') }}</span>
             </p>
 
             <p :class="{ 'control': false }">
               <input id="lastName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('lastName') }"
-                     data-vv-delay="300" name="lastName" type="text" placeholder="Last Name" v-model="lastName" required>
+                     data-vv-delay="300" name="lastName" type="text" placeholder="Last Name" v-model="user.lastName" required>
               <span v-show="errors.has('lastName')" class="help is-danger">{{ errors.first('lastName') }}</span>
             </p>
 
             <p :class="{ 'control': true }">
               <input ref="email" id="email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"
-                     data-vv-delay="300" name="email" type="text" placeholder="Email" v-model="email" required>
+                     data-vv-delay="300" name="email" type="text" placeholder="Email" v-model="user.email" required>
               <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
             </p>
+
+            <p :class="{ 'control': true }">
+              <input ref="address" id="address" v-validate="{ required: true, regex: /^[-\w\s]+$/ }" :class="{'input': true, 'is-danger': errors.has('address') }"
+                     data-vv-delay="300" name="address" type="text" placeholder="Street Address" v-model="user.address" required>
+              <span v-show="errors.has('address')" class="help is-danger">{{ errors.first('address') }}</span>
+            </p>
+
+            <p :class="{ 'control': true }">
+              <input ref="city" id="city" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('alpha') }"
+                     data-vv-delay="300" name="city" type="text" placeholder="City" v-model="user.city" required>
+              <span v-show="errors.has('alpha')" class="help is-danger">{{ errors.first('alpha') }}</span>
+            </p>
+
+            <p :class="{ 'control': true }">
+              <input ref="zip" id="zip" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('numeric') }"
+                     data-vv-delay="300" name="zip" type="text" placeholder="Zip" v-model="user.zip" required>
+              <span v-show="errors.has('numeric')" class="help is-danger">{{ errors.first('numeric') }}</span>
+            </p>
+
+            <p :class="{ 'control': true }">
+              <input ref="phone" id="phone" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('numeric') }"
+                     data-vv-delay="300" name="phone" type="text" placeholder="Phone (ex: 614-555-5555)" v-model="user.phone" required>
+              <span v-show="errors.has('numeric')" class="help is-danger">{{ errors.first('numeric') }}</span>
+            </p>
+
             <p :class="{ 'control': true }">
               <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"
-                     data-vv-delay="300" name="password" type="text" placeholder="Password" v-model="password" required>
+                     data-vv-delay="300" name="password" type="password" placeholder="Password" v-model="user.password" required>
               <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
+            </p>
+            <p :class="{ 'control': true }">
+              <input id="passwordVerify" v-validate="'required|confirmed:password'" :class="{'input': true, 'is-danger': errors.has('passwordVerify') }"
+                     data-vv-delay="300" data-vv-as="password" name="passwordVerify" type="password" placeholder="Verify Password" required>
+              <span v-show="errors.has('passwordVerify')" class="help is-danger">{{ errors.first('passwordVerify') }}</span>
             </p>
           </form>
 
@@ -53,10 +83,17 @@
 //        name: 'Register',
         data () {
             return {
-                email: '',
-                firstName: '',
-                lastName: '',
-                password: '',
+                user: {
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    address: '',
+                    city: '',
+                    zip: '',
+                    phone: '',
+                    password: '',
+//                    passwordVerify: '',
+                },
                 headerText: "Supply On The Fly",
             }
         },
@@ -65,19 +102,39 @@
         },
         computed: {
             isDisabled(){
-                return this.errors.any() || this.email === '';
-            }
+                return this.errors.any()// || this.user.email === '';
+            },
+            verifiedPW(){
+                if(this.user.password === this.user.passwordVerify){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            },
+
         },
         methods: {
             register: function(){
-                console.log("You have registered");
-//                this.$http.post('http://api.openweathdf39239')
-//                    .then(
-//                        response => response.json(),
-//                        response => alert("error")
-//                    )
-//                    .then(value => this.info = value);
-            }
+                console.log(this.user);
+                this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/register', {
+                    firstname: this.user.firstName,
+                    lastname: this.user.lastName,
+                    email: this.user.email,
+                    phone: this.user.phone,
+                    address: this.user.address,
+                    city: this.user.city,
+                    zip: this.user.zip,
+                    password: this.user.password,
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+
         }
     }
 

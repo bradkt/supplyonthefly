@@ -83,6 +83,7 @@
     import register from './Register.vue';
     import contact from './Contact.vue';
 
+
     export default {
         name: 'FlyHeader',
         components: {
@@ -95,7 +96,7 @@
             return {
                 headerText: "Supply On The Fly",
                 publishImmediatly: false,
-                categories: "",
+                categories: [],
                 }
         },
         created: function () {
@@ -120,20 +121,13 @@
                 login: 'login',
                 logout: 'logout',
             }),
-            //this.$http.get('/someUrl', [options]).then(successCallback, errorCallback);
             getCategories(){
-                this.$http.get('http://supplyonthefly.business:8080/capstone-website-api/product/category')
-                    .then(response => {
-                        console.log(response);
-                    }, response => {
-                        console.log(response);
-                    })
-//                    .then(console.log("done"))
-//                    .then(response => response.json(), response => alert("---error----"))
-//                    .then(value => this.categories = value);
-
-//                    console.log(this.categories);
+                this.axios.get('http://supplyonthefly.business:8080/capstone-website-api/product/category').then((response) => {
+                    this.categories = response.data.list;
+//                    console.log(response.data);
+                })
             },
+
         }
     }
 </script>
