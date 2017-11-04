@@ -8,7 +8,7 @@
             </p>
         </div>
         <div v-for="product in filteredProducts" class="productInList">
-            <img class="pull-left img-responsive" src="http://via.placeholder.com/300x300" alt="product image">
+            <img class="pull-left img-responsive" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="product image">
 
             <router-link
                     :to="{ name: 'ProductSingle', params: { product: product } }"
@@ -96,8 +96,8 @@
     }
 
     .productInList img {
-        width: 220px;
-        height: 220px;
+        /*width: 215px;*/
+        height: 200px;
     }
 
     .product-title {

@@ -87,7 +87,6 @@
     export default {
         name: 'FlyHeader',
         components: {
-//            isLoggedIn: this.isLoggedIn,
             'login': login,
             'register': register,
             'contact': contact,
@@ -103,7 +102,7 @@
 //            isDisabled: true;
             let date = new Date;
             date.setDate(date.getDate() + 1);
-            this.$cookies.set("token","SupplyOnTheFly", date);
+            this.$cookies.set("bradsToken","SupplyOnTheFly", date);
 
             // uncomment here to make request to get categories
             this.getCategories();

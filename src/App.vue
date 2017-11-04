@@ -16,6 +16,9 @@
           this.axios.get('http://supplyonthefly.business:8080/capstone-website-api/product').then((response) => {
               this.updateProducts(response.data.productList);
           });
+          if (window.localStorage.getItem('myCart') === '' || window.localStorage.getItem('myCart') === null){
+              window.localStorage.setItem('myCart', JSON.stringify([]));
+          }
       },
       methods: {
           ...mapActions({

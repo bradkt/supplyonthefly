@@ -40,6 +40,12 @@
             </p>
 
             <p :class="{ 'control': true }">
+              <input ref="state" id="state" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('alpha') }"
+                     data-vv-delay="300" name="state" type="text" placeholder="State ex: OH" v-model="user.state" required>
+              <span v-show="errors.has('alpha')" class="help is-danger">{{ errors.first('alpha') }}</span>
+            </p>
+
+            <p :class="{ 'control': true }">
               <input ref="zip" id="zip" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('numeric') }"
                      data-vv-delay="300" name="zip" type="text" placeholder="Zip" v-model="user.zip" required>
               <span v-show="errors.has('numeric')" class="help is-danger">{{ errors.first('numeric') }}</span>
@@ -90,9 +96,12 @@
                     address: '',
                     city: '',
                     zip: '',
+                    state: '',
                     phone: '',
                     password: '',
-//                    passwordVerify: '',
+                    passwordVerify: '',
+                    message: 'Thank You For Registering with Supply On The Fly',
+                    url: 'http://www.supplyonthefly.site/dist',
                 },
                 headerText: "Supply On The Fly",
             }
@@ -109,34 +118,100 @@
                     return true;
                 }
                 else{
-                    return false;
+                    return true;
                 }
             },
-
         },
         methods: {
             register: function(){
-                console.log(this.user);
-                this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/register', {
-                    firstname: this.user.firstName,
-                    lastname: this.user.lastName,
-                    email: this.user.email,
-                    phone: this.user.phone,
-                    address: this.user.address,
-                    city: this.user.city,
-                    zip: this.user.zip,
-                    password: this.user.password,
+                if(this.user.email.contains("supplyonthefly")){
+                    this.registerEmployee();
+                } else {
+                    this.registerCustomer();
+                }
+            },
+            registerCustomer(){
+                this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register', {
+                    cardIssuer: "unknown",
+                    ccFirstname: "card firstname",
+                    ccLastname: "card lastname",
+                    customerId: "0000000000",
+                    cvv: "000",
+                    expDate: "2018-11-11",
+                    imageName: "nonono_image.jpg",
+                })
+                    .then(function (response) {
+
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+
+                        console.log(error);
+                    });
+            },
+            registerEmployee(){
+
+            },
+            sendEmail(){
+
+                this.axios.post('http://localhost:8081/register', {
+
+                    user: this.user,
+
                 })
                 .then(function (response) {
                     console.log(response);
                 })
                 .catch(function (error) {
+
                     console.log(error);
                 });
             },
 
         }
     }
+
+//{
+//    "cardIssuer": "Mastercard",
+//        "ccFirstname": "card firstname",
+//        "ccLastname": "card lastname",
+//        "customerId": "0000000000",
+//        "cvv": "000",
+//        "expDate": "2018-12-12",
+//        "imageName": "no_image.jpg"
+//    }
+ //  {
+//    "department": "Accounting",
+//        "employeeNumber": "0000000000",
+//        "hireDate": "2014-10-10",
+//        "role": "position"
+//    }
+
+//    customer: {
+//        cardIssuer: "",
+//            ccFirstname: "firsname",
+//            ccLastname: "lasname",
+//            creditcardNumber: "1234590123456",
+//            customerId: "177777890",
+//            cvv: "999",
+//            expDate: "2018-10-10",
+//            imageName: "no_image.jpg"
+//    },
+//    person: {
+//        address: "140 ymalLane",
+//            altEmail: "flap@theschoool.com",
+//            city: "Neem",
+//            firstname: "Charles",
+//            lastname: "Xavier",
+//            login: {
+//            password: "345345345345345",
+//                username: "brobro@youngsters.com"
+//        },
+//        phoneNumber: "1-800-312-9951",
+//            registrationDate: "2017-11-02",
+//            state: "NY",
+//            zipcode: "12186"
+//    }
 
 </script>
 

@@ -2,7 +2,7 @@
   <section>
 
     <div class="row">
-      <div class="container-fluid bg-1 text-center">
+      <div class="container-fluid bg-top text-center">
         <h2>Welcome To your Employee Page, {{ profile.username}}</h2>
         <div class="earned-days-off">
           <div class="dayOffBlock"><span class="label">Sick Days: </span><span class="big-num">{{ profile.sickDaysRemain }}</span></div>
@@ -88,22 +88,33 @@
                 profile: {"username": "Brad", sickDaysRemain: 3, vacationDaysRemain: 6, personalDays: 2},
                 holidays:  {"day1": { name: "Christmas", date: "December 25, 2017"},
                             "day2": { name: "New Years Day", date: "January 01, 2017"},
+                            "day2": { name: "Martin Luther King, Jr. Day", date: "January 15, 2017"},
                             "day3": { name: "Thanksgiving Day", date: "November 25, 2017"},
                             "day4": { name: "Memorial Day", date: "May 15, 2017"},
                             "day5": { name: "Labor Day", date: "September 15, 2017"},
                 },
                 documents: {"doc1": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
-                            "doc2": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
+                            "doc2": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Christmas Marketing Preview"},
                             "doc3": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
                             "doc4": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
                             "doc5": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
                             "doc6": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
                 },
-                employees: {"emp1": { id: "1234qwer", position: "Web Developer", name: "Brad Tracy", phone: "(614)555-5555", email: "brad@supplyonthefly.site", sickDaysRemain: "2", vacationDaysRemain: "6", hireDate: "", department: "Technoloy Development", status: "active"},
-                            "emp2": { id: "sdfg5678", position: "Software Engineer", name: "Jason Parker"},
-                            "emp3": { id: "sery89gh", position: "Software Engineer", name: "Yonas Milo"},
-                            "emp4": { id: "43lk5jh5", position: "Network Engineer", name: "Jamie Diehl"},
-                            "emp5": { id: "w45kj5kl", position: "Network Engineer", name: "Jeff Lynch"},
+                employees: {"emp1": { id: "1234qwer", position: "Web Developer", name: "Brad Tracy", phone: "(614)555-5555",
+                                email: "brad@supplyonthefly.site", sickDaysRemain: "2", vacationDaysRemain: "6", hireDate: "",
+                                department: "Technoloy Development", status: "active"},
+                            "emp2": { id: "sdfg5678", position: "Software Engineer", name: "Jason Parker", phone: "(614)555-5555",
+                                email: "jason@supplyonthefly.site", sickDaysRemain: "3", vacationDaysRemain: "6", hireDate: "",
+                                department: "Technoloy Development", status: "active"},
+                            "emp3": { id: "sery89gh", position: "Software Engineer", name: "Yonas Milo", phone: "(614)555-5555",
+                                email: "brad@supplyonthefly.site", sickDaysRemain: "4", vacationDaysRemain: "2", hireDate: "",
+                                department: "Technoloy Development", status: "active"},
+                            "emp4": { id: "43lk5jh5", position: "Network Engineer", name: "Jamie Diehl", phone: "(614)555-5555",
+                                email: "brad@supplyonthefly.site", sickDaysRemain: "5", vacationDaysRemain: "3", hireDate: "",
+                                department: "Technoloy Development", status: "active"},
+                            "emp5": { id: "w45kj5kl", position: "Network Engineer", name: "Jeff Lynch", phone: "(614)555-5555",
+                                email: "brad@supplyonthefly.site", sickDaysRemain: "6", vacationDaysRemain: "4", hireDate: "",
+                                department: "Technoloy Development", status: "active"},
                 },
             };
         },
@@ -132,7 +143,7 @@
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    width: 380px;
+    width: 430px;
     margin: 10px auto;
     padding: 10px 10px;
   }
@@ -143,7 +154,7 @@
 
   .timeOff {
     text-align: left;
-    padding: 0 0 0 20%;
+    padding: 0 0 0 8%;
   }
 
   .datepicker {
@@ -163,15 +174,20 @@
     margin: 25px 0 10px 0;
   }
 
-  .bg-1 {
+  .bg-top {
     background-color: #00BEC5;
     color: #ffffff;
-    min-height: 500px;
+    min-height: 300px;
   }
   .bg-2 {
     background-color: #474e5d; /* Dark Blue */
     color: #ffffff;
     min-height: 500px;
+  }
+  .bg-1 {
+    background-color: #00BEC5;
+    color: #ffffff;
+    min-height: 550px;
   }
   .bg-2 a, .bg-2 span, .bg-2 span, .bg-1 a {
     margin: 5px 20px 5px 0px;
@@ -195,6 +211,7 @@
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    width: 200px;
   }
 
   .label {

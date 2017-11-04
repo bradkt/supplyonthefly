@@ -16,7 +16,7 @@
             </p>
             <p :class="{ 'control': true }">
               <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"
-                     name="password" type="text" placeholder="Password" data-vv-delay="200" v-model="password" required>
+                     name="password" type="password" placeholder="Password" data-vv-delay="200" v-model="password" required>
               <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
             </p>
           </form>
@@ -64,8 +64,8 @@
                 this.axios.get(
                     'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
                     {auth: {
-                        username: "user@email.com",
-                        password: "password",
+                        username: this.email,
+                        password: this.password,
                     }
                 }
                 ).then((response) => {
@@ -76,7 +76,7 @@
                         (error) => {
                             console.log(error);
                         }
-                    );
+                );
             }
         }
     }

@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         // make user object and include isloggedin with name, url, etc
-        isLoggedIn: false,
+        isLoggedIn: true,
         cart: {
             items: [],
             total: 0,

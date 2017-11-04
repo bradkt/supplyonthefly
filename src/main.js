@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-// import Vuex from 'vuex'
 import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -16,9 +15,6 @@ global.jQuery = jQuery;
 let Bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.js');
 import VeeValidate from 'vee-validate';
 import VueCookies from 'vue-cookies'
-import VueLocalStorage from 'vue-localstorage'
-
-
 
 Vue.config.productionTip = false;
 Vue.component('icon', Icon);
@@ -27,7 +23,7 @@ Vue.component('flyFooter', Footer);
 Vue.use(VueCookies);
 Vue.use(VueAxios, axios);
 Vue.use(VeeValidate);
-Vue.use(VueLocalStorage);
+
 
 //axios.defaults.baseURL = 'https://api.example.com';
 //axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
@@ -37,7 +33,7 @@ Vue.use(VueLocalStorage);
 // Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
 // Vue.http.headers.common['Access-Control-Allow-Credentials'] = "true";
 // Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*, application/vnd.sun.wadl+xml';
-// Vue.http.options.credentials = true;
+
 /* eslint-disable no-new */
 
 new Vue({
@@ -46,4 +42,4 @@ new Vue({
   template: '<App/>',
   store: store,
   components: { App }
-})
+});
