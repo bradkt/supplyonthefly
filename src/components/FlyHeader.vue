@@ -10,7 +10,7 @@
                 <nav class="navbar navbar-static-top">
                     <div class="container">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                                 <span class="sr-only">Toggle navigation</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
@@ -52,6 +52,9 @@
                                         <li>
                                           <a @click.prevent="logout">Logout</a>
                                         </li>
+                                        <li>
+                                            <a data-toggle="modal" data-target="#updateInformationModal">Profile Information</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -71,6 +74,9 @@
 <!--Contact Modal-->
      <contact></contact>
 
+<!--Contact Modal-->
+   <updater></updater>
+
     </header>
 
 
@@ -82,7 +88,7 @@
     import login from './Login.vue';
     import register from './Register.vue';
     import contact from './Contact.vue';
-
+    import updater from './updateInformation.vue';
 
     export default {
         name: 'FlyHeader',
@@ -90,6 +96,7 @@
             'login': login,
             'register': register,
             'contact': contact,
+            'updater': updater,
         },
         data () {
             return {
@@ -102,8 +109,10 @@
 //            isDisabled: true;
             let date = new Date;
             date.setDate(date.getDate() + 1);
-            this.$cookies.set("bradsToken","SupplyOnTheFly", date);
 
+            document.cookie = "username=brad tracy; expires=Thu, 18 Dec 2017 12:00:00 UTC";
+
+            console.log(document.cookie);
             // uncomment here to make request to get categories
             this.getCategories();
         },

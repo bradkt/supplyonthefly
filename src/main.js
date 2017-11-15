@@ -14,19 +14,18 @@ import jQuery from 'jquery';
 global.jQuery = jQuery;
 let Bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.js');
 import VeeValidate from 'vee-validate';
-import VueCookies from 'vue-cookies'
 
 Vue.config.productionTip = false;
 Vue.component('icon', Icon);
 Vue.component('flyHeader', Header);
 Vue.component('flyFooter', Footer);
-Vue.use(VueCookies);
 Vue.use(VueAxios, axios);
 Vue.use(VeeValidate);
 
 
 //axios.defaults.baseURL = 'https://api.example.com';
-//axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+// axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 // Vue.http.headers.common['Access-Control-Request-Method'] = 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
 // Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 

@@ -5,6 +5,7 @@
       <div class="container-fluid bg-top text-center">
         <h2>Welcome To your Employee Page, {{ profile.username}}</h2>
         <div class="earned-days-off">
+          //add blocks for hire date and employee number
           <div class="dayOffBlock"><span class="label">Sick Days: </span><span class="big-num">{{ profile.sickDaysRemain }}</span></div>
           <div class="dayOffBlock"><span class="label">Vacation Days: </span><span class="big-num">{{ profile.vacationDaysRemain }}</span></div>
           <div class="dayOffBlock"><span class="label">Personal Days: </span><span class="big-num">{{ profile.personalDays }}</span></div>
@@ -70,10 +71,13 @@
 <script>
 
     import Datepicker from 'vuejs-datepicker';
+    import empUpdater from './updateEmpInfo.vue';
+
     export default {
         name: 'Portal',
         components: {
-            Datepicker: Datepicker
+            Datepicker: Datepicker,
+            empUpdater: empUpdater,
         },
         data() {
             return {

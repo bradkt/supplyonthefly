@@ -6,7 +6,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         // make user object and include isloggedin with name, url, etc
-        isLoggedIn: true,
+        // isLoggedIn: false,
+        user: {
+            isLoggedIn: false,
+            data: {},
+        },
         cart: {
             items: [],
             total: 0,
@@ -17,7 +21,7 @@ export default new Vuex.Store({
     },
     getters: {
         isLoggedIn: (state, getters) => {
-            return state.isLoggedIn;
+            return state.user.isLoggedIn;
         },
         getCart: (state, getters) => {
             return state.cart.items;
@@ -28,15 +32,23 @@ export default new Vuex.Store({
         getProducts: (state, getters) => {
             return state.products;
         },
+        getUserData: (state, getters) => {
+            return state.user.data;
+        },
     },
     mutations: {
         login(state) {
-
-            state.isLoggedIn = true;
+            state.user.isLoggedIn = true;
         },
         logout(state) {
-
-            state.isLoggedIn = false;
+            state.user.isLoggedIn = false;
+        },
+        clearCart(state) {
+            state.cart.items = [];
+            state.cart.total = 0;
+        },
+        addUserData(state, payload) {
+            state.user.data = payload;
         },
         incrementQuantity(state, payload) {
             state.cart.items.map(function(item, i){
@@ -71,6 +83,7 @@ export default new Vuex.Store({
                 let foundInCart = false;
                 state.cart.items.map(function(item, i){
                     if(item.sku == payload.sku) {
+                        //should this be payload rather than item? maybe need to increment both?
                         item["cartQuantity"] += 1;
                         item["quantity"] -= 1;
                         state.cart.items.splice(i, 1, item);
@@ -108,9 +121,23 @@ export default new Vuex.Store({
         logout({state, commit}) {
             commit('logout');
         },
+        clearCart({state, commit}) {
+            commit('logout');
+        },
         addToCart({ state, commit }, product) {
+            //// actionA ({ commit }) {
+            //     return new Promise((resolve, reject) => {
+            //         setTimeout(() => {
+            //             commit('someMutation')
+            //             resolve()
+            //         }, 1000)
+            //     })
+            //// } then we can do .then and call method to update button text.
             commit('addToCart', product);
             commit('updateCartTotal');
+        },
+        addUserData({state, commit}, data) {
+            commit('addUserData', data);
         },
         removeFromCart({state, commit}, product) {
             commit('removeFromCart', product);

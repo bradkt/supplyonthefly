@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          <h4 class="modal-title">Login to Your Account</h4>
+          <h4 class="modal-title">{{ header }}</h4>
         </div>
         <div class="modal-body">
 
@@ -26,7 +26,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button :disabled="isDisabled" @click.prevent="authUser" type="submit" class="btn btn-primary">Login</button>
           <div class="login-help">
-            <a href="#">Forgot Password</a>
+            <a @click.prevent="forgotLogin">Forgot Password</a><span id="emailhelp" class="hidden"> - Please Supply An Email and Try Again</span>
           </div>
         </div>
       </div>
@@ -36,11 +36,13 @@
 
 <script>
     import { mapActions } from 'vuex';
+//    import { mapGetters } from 'vuex';
 
     export default {
 //        name: 'Login',
         data () {
             return {
+                header: 'Login to Your Account',
                 email: '',
                 password: '',
                 headerText: "Supply On The Fly",
@@ -50,6 +52,9 @@
 
         },
         computed: {
+//            ...mapGetters({
+//                addUserData: 'addUserData',
+//            }),
             isDisabled(){
                 return this.errors.any() || this.email === '';
             },
@@ -59,8 +64,10 @@
             ...mapActions({
                 login: 'login',
                 logout: 'logout',
+                addUserData: 'addUserData',
             }),
             authUser() {
+//                this.login(); //comment out when login works
                 this.axios.get(
                     'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
                     {auth: {
@@ -69,14 +76,46 @@
                     }
                 }
                 ).then((response) => {
-                            console.log(response);
                             this.login();
                             jQuery('#LoginModal').modal('hide');
+                            console.log(response);
+                            this.addUserData(response.data);
                         },
                         (error) => {
                             console.log(error);
                         }
                 );
+            },
+            forgotLogin() {
+//                jQuery("#password").hide();
+                this.header = "Let's Recover Your Password"
+                if (this.errors.items.length !== 0){
+                    jQuery("#emailhelp").removeClass("hidden");
+                } else {
+                    this.axios.post('http://localhost:8081/recover', {
+                    login: {
+                        email: this.email,
+                        password: this.randomString(9),
+                    },
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+
+                        console.log(error);
+                    });
+                }
+
+            },
+            randomString(i){
+                let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let result = '';
+                while (i > 0){
+                    result += chars[Math.round(Math.random() * (chars.length - 1))];
+                    i--
+                }
+                return result;
             }
         }
     }
@@ -103,6 +142,10 @@
     -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .hidden {
+    display: none;
   }
 
   .modal-footer {

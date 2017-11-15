@@ -20,8 +20,15 @@
             <p>Price: ${{ product.price }}</p>
             <h5>In Stock: {{ product.quantity }}</h5>
             <p>{{ product.description }}</p>
-            <button @click.prevent="addToCart(product)">Add To Cart</button>
-            <!--<button @click.prevent="removeFromCart(product)">Remove From Cart</button>-->
+            <button type="button" data-loading-text="Loading..." class="" :class="{disabledButton: isDisabled(product)}"
+                    ref="addToCartButton" :disabled="isDisabled(product)"
+                    autocomplete="off" @click.prevent="addToCart(product)">
+                <span v-if="product.cartQuantity >= 1">{{ dirtyButtonText }}</span>
+                <span v-else>{{ buttonText }}</span>
+                </button>
+        </div>
+        <div v-show="filteredProducts.length == 0" class="emptyProductReturn productInList">
+          <h2>There are no products Matching this search.</h2>
         </div>
     </section>
 </template>
@@ -30,6 +37,8 @@
 
     import { mapGetters } from 'vuex';
     import { mapActions } from 'vuex';
+    //https://getbootstrap.com/docs/3.3/javascript/#buttons-stateful
+
 
     export default {
         props: {
@@ -41,13 +50,15 @@
         data () {
             return {
                 searchTerm: '',
+                buttonText: 'Add To Cart',
+                dirtyButtonText: 'Product In Cart',
             }
         },
         created(){
 
         },
         beforeCreate: function() {
-            console.log("before - created");
+
         },
         computed: {
             ...mapGetters({
@@ -69,6 +80,17 @@
                     console.log(response.data)
                 })
             },
+            addProductToCart(){
+//                jQuery('.addToCartButton').on('click', function () {
+//                    jQuery(this).text('Product In Cart'); // button text will be "finished!"
+//                })
+//                this.$refs.addToCartButton.innerText = this.dirtyButtonText;
+            },
+            isDisabled(product){
+                if (product.quantity < 1){
+                    return true;
+                }
+            },
         }
     }
 </script>
@@ -88,6 +110,10 @@
         width: 50%;
     }
 
+    .emptyProductReturn h2 {
+      margin: 65px 0 0 0;
+    }
+
     .productInList {
         margin: 10px 10px;
         height: 220px;
@@ -102,6 +128,10 @@
 
     .product-title {
         margin-top: 25px;
+    }
+
+    .disabledButton{
+        background-color: rgba(221, 64, 64, 0.5);
     }
 
     @media only screen and (max-width: 745px) {

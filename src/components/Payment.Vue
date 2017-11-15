@@ -15,9 +15,9 @@
                     </span>
         <div class="modal-body card-wrapper">
           <form action="#">
-
+            <!--required|credit_card-->
             <p :class="{ 'control': true }">
-              <input v-validate="'required|credit_card'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="creditCard"
+              <input v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="creditCard"
                      data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number">
               <span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number</span>
             </p>
@@ -78,21 +78,132 @@
                 isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal',
+                clearCart: 'clearCart',
             }),
             isDisabled(){
                 return this.errors.any() || this.creditCard === '';
             },
+
         },
         methods: {
             ...mapActions({
 //                returnItemToCart: 'returnItemToCart',
             }),
             submitPayment() {
-                console.log(this.productTotal, this.saleTotal);
+                let request = this.formatCartRequest();
+                console.log(request);
+                this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/cart/checkout', {
+                    request
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            purchaseEmail(){
+
+                console.log(this.getCart);
+//                this.axios.post('http://http://localhost:8081/purchase', {
+//
+//
+//
+//                })
+//                    .then(function (response) {
+////                        this.sendCustomerEmail();
+//                        console.log(response);
+//                    })
+//                    .catch(function (error) {
+//
+//                        console.log(error);
+//                    });
+            },
+            randomString(i){
+                let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let result = '';
+                while (i > 0){
+                    result += chars[Math.round(Math.random() * (chars.length - 1))];
+                    i--
+                }
+                return result;
+            },
+            formatCartRequest(){
+                let currentCart = this.getCart;
+                let cartID = this.randomString(9);
+
+                var cartDetails = {
+                    sessionId: cartID,
+                    cartDate: "2017-11-10",
+                    customerId: "kkmJdH83E",
+                    orderItem: [],
+                    paymentMethod: "Visa",
+                    total: 0,
+                };
+                currentCart.map(function(item){
+                    cartDetails.orderItem.push(
+                        {
+                            price: item.price,
+                            quantity: item.cartQuantity,
+                            sessionId: cartID,
+                            sku: item.sku,
+                            total: item.price * item.cartQuantity
+                        }
+                    )
+                    cartDetails.total += (item.price * item.cartQuantity).toFixed(2);
+                });
+                return cartDetails;
             },
         }
     }
-
+//    {
+//        cartDate: "2017-12-10",
+//        customerId: "1234567",
+//        orderItem: [
+//        {
+//            price: 12.32,
+//            quantity: 2,
+//            sessionId: "1234567890",
+//            sku: "1234567890",
+//            total: 24.64
+//        },
+//        {
+//            price: 12.32,
+//            quantity: 1,
+//            sessionId: "1234567890",
+//            sku: "1234567890",
+//            total: 12.32
+//        }
+//    ],
+//        paymentMethod: "Visa",
+//        sessionId: "1234567890",
+//        total: 36.96
+//    }
+    //                    customer: {
+    //                        cardIssuer: "",
+    //                        ccFirstname: "",
+    //                        ccLastname: "",
+    //                        customerId: this.randomString(9),
+    //                        cvv: "",
+    //                        expDate: "",
+    //                        imageName: "",
+    //                        creditcardNumber: ""
+    //                    },
+    //                    person: {
+    //                        address: "140 Louis Lane",
+    //                        altEmail: "tracy@thesuper.com",
+    //                        city: "Columbus",
+    //                        firstname: "Clark",
+    //                        lastname: "Kent",
+    //                        login: {
+    //                            password: "qwerqwer",
+    //                            username: "btracy@oneyoungsters.com"
+    //                        },
+    //                        phoneNumber: "1-800-312-9951",
+    //                        registrationDate: "2017-11-02",
+    //                        state: "NY",
+    //                        zipcode: "12186"
+    //                    }
 </script>
 
 <style scoped>

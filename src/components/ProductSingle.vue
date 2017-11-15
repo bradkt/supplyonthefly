@@ -1,12 +1,13 @@
 <template>
     <section>
         <div>
-            <img class="img-responsive" src="http://via.placeholder.com/250x250" alt="Generic placeholder image" width="250" height="250">
+            <img class="img-responsive text-center" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="product image">
         </div>
         <div>
-            <h2>{{ product.title }}</h2>
-            <p>{{ product.inStock }}</p>
-            <p>{{ product.price }}</p>
+            <h2>{{ product.name }}</h2>
+            <p>SKU: {{ product.sku }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <h5>In Stock: {{ product.quantity }}</h5>
             <p>{{ product.description }}</p>
             <button @click.prevent="addToCart(product)">Add To Cart</button>
         </div>
@@ -58,6 +59,11 @@
         width: 70%;
         text-align: center;
         font-family: Helvetica, sans-serif;
+    }
+
+    img {
+        height: 350px;
+        margin: 0 auto;
     }
 
     @media only screen and (max-width: 745px) {

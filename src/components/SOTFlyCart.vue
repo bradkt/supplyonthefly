@@ -2,7 +2,7 @@
 <template>
     <section class="container">
         <div class="cart-summary">
-            <span>{{ Title }}</span>
+            <span>Welcome {{ getUserData.person.firstname || '' }}</span>
             <span v-if="isLoggedIn">
                 <span>Product Total: {{ getCartTotal.toFixed(2) }}</span>
                 <button v-if="getCartTotal > 0" type="button" class="btn" data-toggle="modal" data-target="#CheckoutModal">
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div v-for="product in getCart" class="productInCart">
-            <img class="pull-left" src="http://via.placeholder.com/218x218" alt="Generic placeholder image" width="218" height="218">
+            <img class="pull-left" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="Generic placeholder image" width="218" height="218">
             <router-link
                     :to="{ name: 'ProductSingle', params: { product: product } }"
                     tag="h4"
@@ -44,7 +44,7 @@
           <button @click.prevent="clearPreviousCartItems">Clear Previous Products</button>
         </div>
           <div v-for="product in previousCart" class="productPreviousInCart">
-            <img class="pull-left" src="http://via.placeholder.com/90x90" alt="Generic placeholder image" width="90" height="90">
+            <img class="pull-left" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="SOTF image" height="90">
             <span class="cart-details pull-left">
               <router-link
                       :to="{ name: 'ProductSingle', params: { product: product } }"
@@ -77,7 +77,7 @@
         },
         data() {
             return {
-                Title: "Brad's Cart",
+//                Title: '',
             };
         },
         created(){
@@ -104,6 +104,7 @@
                 isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal',
+                getUserData: 'getUserData',
             }),
             isDisabled(){
                 return this.errors.any() || this.creditCard === '';
