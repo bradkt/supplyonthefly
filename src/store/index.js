@@ -122,17 +122,9 @@ export default new Vuex.Store({
             commit('logout');
         },
         clearCart({state, commit}) {
-            commit('logout');
+            commit('clearCart');
         },
         addToCart({ state, commit }, product) {
-            //// actionA ({ commit }) {
-            //     return new Promise((resolve, reject) => {
-            //         setTimeout(() => {
-            //             commit('someMutation')
-            //             resolve()
-            //         }, 1000)
-            //     })
-            //// } then we can do .then and call method to update button text.
             commit('addToCart', product);
             commit('updateCartTotal');
         },

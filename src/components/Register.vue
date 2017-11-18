@@ -110,11 +110,12 @@
                     },
                 },
                 employee: {
-                    department: '',
+                    department: 'NewHireDepartment',
                     employeeNumber: this.randomString(9),
-                    hireDate: '',
-                    role: '',
+                    hireDate: '2014-10-10',
+                    role: 'NewHireRole',
                 },
+                //{"department":"Accounting","employeeNumber":"0000000000","hireDate":"2014-10-10","role":"position"}
                 customer: {
                     cardIssuer: '',
                         ccFirstname: '',
@@ -147,15 +148,14 @@
         methods: {
             register: function(){
                 if(this.person.login.username.match("supplyonthefly")){
-                    this.registerEmployee();
-//                    this.sendEmail();
+                    this.registerEmployee(this.sendEmployeeEmail);
                 } else {
-                    this.registerCustomer();
-//                    this.sendEmail();
+                    this.registerCustomer(this.sendCustomerEmail);
                 }
             },
-            registerCustomer(){
+            registerCustomer(cb){
                 console.log('register Customer call');
+
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/customer', {
                     customer: this.customer,
                     person: this.person,
@@ -186,16 +186,19 @@
 //                    }
                 })
                     .then(function (response) {
-//                        this.sendCustomerEmail();
+                        cb();
                         console.log(response);
                     })
                     .catch(function (error) {
-
                         console.log(error);
                     });
+//                this.sendCustomerEmail();
             },
-            registerEmployee(){
+            registerEmployee(cb){
                 console.log('register Employee call');
+
+                this.person.login.password = this.randomString(9);
+                console.log(this.person.login);
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/employee', {
                     employee: this.employee,
                     person: this.person,
@@ -221,18 +224,19 @@
 //                        zipcode: "43235"
 //                    }
                 })
-                    .then(function (response) {
-//                        this.sendEmployeeEmail();
-                        console.log(response);
-                    })
-                    .catch(function (error) {
+                .then(function (response) {
+                    cb();
+                    console.log(response);
+                })
+                .catch(function (error) {
 
-                        console.log(error);
-                    });
+                    console.log(error);
+                });
+//                this.sendEmployeeEmail();
             },
             sendCustomerEmail(){
-                this.person.login.password = '';
-                this.axios.post('http://localhost:8081/register/customer', {
+
+                this.axios.post('http://localhost:8081/customer', {
 
                     user: this.person,
 
@@ -246,19 +250,18 @@
                 });
             },
             sendEmployeeEmail(){
-                this.person.login.password = '';
-                this.axios.post('http://localhost:8081/register/employee', {
+                this.axios.post('http://localhost:8081/employee', {
 
                     user: this.person,
 
                 })
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
 
-                        console.log(error);
-                    });
+                    console.log(error);
+                });
             },
             randomString(i){
                     let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

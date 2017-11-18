@@ -57,23 +57,13 @@
               <span v-show="errors.has('numeric')" class="help is-danger">{{ errors.first('numeric') }}</span>
             </p>
 
-            <!--<p :class="{ 'control': true }">-->
-              <!--<input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"-->
-                     <!--data-vv-delay="300" name="password" type="password" placeholder="Password" v-model="person.login.password" required>-->
-              <!--<span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>-->
-            <!--</p>-->
-            <!--<p :class="{ 'control': true }">-->
-              <!--<input id="passwordVerify" v-validate="'required|confirmed:password'" :class="{'input': true, 'is-danger': errors.has('passwordVerify') }"-->
-                     <!--data-vv-delay="300" data-vv-as="password" name="passwordVerify" type="password" placeholder="Verify Password" required>-->
-              <!--<span v-show="errors.has('passwordVerify')" class="help is-danger">{{ errors.first('passwordVerify') }}</span>-->
-            <!--</p>-->
             <hr>
             <div v-if="getUserData.customer">
               <h2>Payment Information</h2>
 
               <p :class="{ 'control': true }">
                 <input id="ccFirstName" v-validate="'alpha'" :class="{'input': true, 'is-danger': errors.has('ccFirstName') }"
-                       data-vv-delay="300" name="ccFirstName" type="text" placeholder="First Name On Card" v-model="getUserData.customer.ccFirstname" required autofocus>
+                       data-vv-delay="300" name="ccFirstName" type="text" placeholder="First Name On Card" v-model="getUserData.customer.ccFirstname" required>
                 <span v-show="errors.has('ccFirstName')" class="help is-danger">{{ errors.first('ccFirstName') }}</span>
               </p>
 
@@ -105,10 +95,15 @@
             <div v-if="getUserData.employee">
               <h2>Employee Information</h2>
                 <p :class="{ 'control': true }">
-                  <input id="role" v-validate="'alpha'" :class="{'input': true, 'is-danger': errors.has('ccFirstName') }"
-                         data-vv-delay="300" name="ccFirstName" type="text" placeholder="First Name On Card" v-model="getUserData.employee.role" required autofocus>
-                  <span v-show="errors.has('ccFirstName')" class="help is-danger">{{ errors.first('ccFirstName') }}</span>
+                  <input id="role" v-validate="'alpha'" :class="{'input': true, 'is-danger': errors.has('role') }"
+                         data-vv-delay="300" name="role" type="text" placeholder="Role" v-model="getUserData.employee.role" required>
+                  <span v-show="errors.has('role')" class="help is-danger">{{ errors.first('role') }}</span>
                 </p>
+              <p :class="{ 'control': true }">
+                <input id="department" v-validate="'alpha'" :class="{'input': true, 'is-danger': errors.has('department') }"
+                       data-vv-delay="300" name="department" type="text" placeholder="Department" v-model="getUserData.employee.department" required>
+                <span v-show="errors.has('department')" class="help is-danger">{{ errors.first('department') }}</span>
+              </p>
             </div>
 
           </form>
@@ -133,9 +128,6 @@
 //        name: 'updateInformation',
         data () {
             return {
-                // rename all these to match the person object,
-                //then employees and coustomers will need their own update endpoint
-                //this can be the same as update password when match email
                 headerText: "Supply On The Fly",
 //                passwordVerify: '',
 //                person: {
@@ -194,47 +186,62 @@
         },
         methods: {
             updateData(){
-                console.log('updateData');
-                console.log(this.getUserData);
-//                this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/', {
-//                    customer: this.customer,
-//                    person: this.person,
-//                    customer: {
-//                        cardIssuer: "",
-//                        ccFirstname: "",
-//                        ccLastname: "",
-//                        customerId: this.randomString(9),
-//                        cvv: "",
-//                        expDate: "",
-//                        imageName: "",
-//                        creditcardNumber: ""
-//                    },
-//                    person: {
-//                        address: "140 Louis Lane",
-//                        altEmail: "tracy@thesuper.com",
-//                        city: "Columbus",
-//                        firstname: "Clark",
-//                        lastname: "Kent",
-//                        login: {
-//                            password: "qwerqwer",
-//                            username: "btracy@oneyoungsters.com"
-//                        },
-//                        phoneNumber: "1-800-312-9951",
-//                        registrationDate: "2017-11-02",
-//                        state: "NY",
-//                        zipcode: "12186"
-//                    }
-//                })
-//                    .then(function (response) {
-//                        console.log(response);
-//                    })
-//                    .catch(function (error) {
-//                        console.log(error);
-//                    });
+                console.log(JSON.stringify(this.getUserData));
+
+                if (this.getUserData.customer) {
+                    let customerID = this.getUserData.customer.customerId;
+                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/customer/profile/' + customerID, {
+                        customer: this.getUserData.customer,
+                        person: this.getUserData.person,
+                    }).then(function (response) {
+                            console.log(response);
+                    }).catch(function (error) {
+                            console.log(error);
+                    });
+                }
+                if (this.getUserData.employee) {
+                    let employeeID = this.getUserData.employee.employeeNumber;
+                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/employee/profile/' + employeeID, {
+                        customer: this.getUserData.employee,
+                        person: this.getUserData.person,
+                    }).then(function (response) {
+                            console.log(response);
+                    }).catch(function (error) {
+                            console.log(error);
+                    });
+                }
+
             },
         }
     }
 
+    //                    customer: this.customer,
+    //                    person: this.person,
+    //                    customer: {
+    //                        cardIssuer: "",
+    //                        ccFirstname: "",
+    //                        ccLastname: "",
+    //                        customerId: this.randomString(9),
+    //                        cvv: "",
+    //                        expDate: "",
+    //                        imageName: "",
+    //                        creditcardNumber: ""
+    //                    },
+    //                    person: {
+    //                        address: "140 Louis Lane",
+    //                        altEmail: "tracy@thesuper.com",
+    //                        city: "Columbus",
+    //                        firstname: "Clark",
+    //                        lastname: "Kent",
+    //                        login: {
+    //                            password: "qwerqwer",
+    //                            username: "btracy@oneyoungsters.com"
+    //                        },
+    //                        phoneNumber: "1-800-312-9951",
+    //                        registrationDate: "2017-11-02",
+    //                        state: "NY",
+    //                        zipcode: "12186"
+    //                    }
 </script>
 
 <style scoped>

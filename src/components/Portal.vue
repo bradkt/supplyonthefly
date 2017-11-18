@@ -3,9 +3,9 @@
 
     <div class="row">
       <div class="container-fluid bg-top text-center">
-        <h2>Welcome To your Employee Page, {{ profile.username}}</h2>
+        <h2>Welcome To your Employee Page, {{ getUserData.person.firstname }}</h2>
         <div class="earned-days-off">
-          //add blocks for hire date and employee number
+          <div class="dayOffBlock"><span class="label">Employee ID: </span><span class="med-num">{{ getUserData.employee.employeeNumber }}</span></div>
           <div class="dayOffBlock"><span class="label">Sick Days: </span><span class="big-num">{{ profile.sickDaysRemain }}</span></div>
           <div class="dayOffBlock"><span class="label">Vacation Days: </span><span class="big-num">{{ profile.vacationDaysRemain }}</span></div>
           <div class="dayOffBlock"><span class="label">Personal Days: </span><span class="big-num">{{ profile.personalDays }}</span></div>
@@ -37,7 +37,7 @@
 
     <div class="row">
 
-      <div class="container-fluid bg-1 text-center col-sm-6 form-group">
+      <div class="container-fluid bg-1 text-center col-sm-6">
         <div class="timeOff">
           <h3 class="">Time Off Requests</h3>
           <div class="list">
@@ -64,20 +64,17 @@
 
     </div>  <!--End Row-->
 
-
   </section>
 </template>
 
 <script>
-
+    import { mapGetters } from 'vuex';
     import Datepicker from 'vuejs-datepicker';
-    import empUpdater from './updateEmpInfo.vue';
 
     export default {
         name: 'Portal',
         components: {
             Datepicker: Datepicker,
-            empUpdater: empUpdater,
         },
         data() {
             return {
@@ -121,6 +118,19 @@
                                 department: "Technoloy Development", status: "active"},
                 },
             };
+        },
+        beforeRouteEnter(to, from, next){
+            next(vm => {
+                if(!vm.isLoggedIn || !vm.getUserData.employee){
+                    return next('/');
+                }
+            });
+        },
+        computed: {
+            ...mapGetters({
+                getUserData: 'getUserData',
+                isLoggedIn: 'isLoggedIn',
+            }),
         },
         methods: {
             showEmp(emp) {
@@ -216,6 +226,7 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
     width: 200px;
+    height: 150px;
   }
 
   .label {
@@ -229,7 +240,11 @@
   }
 
   span.big-num {
-    font-size: 45px;
+    font-size: 35px;
+  }
+
+  span.med-num {
+    font-size: 35px;
   }
 
 </style>

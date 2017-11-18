@@ -6,12 +6,12 @@
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           <h4 class="modal-title">{{ header }}</h4>
         </div>
-        <div class="modal-body">
+        <div v-if="!recover" class="modal-body">
 
           <form @submit.prevent="isDisabled">
             <p :class="{ 'control': true }">
               <input ref="email" id="email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"
-                     name="email" type="text" placeholder="Email" v-model="email" data-vv-delay="200" required autofocus>
+                     name="email" type="text" placeholder="Email" v-model="email" data-vv-delay="200" required>
               <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
             </p>
             <p :class="{ 'control': true }">
@@ -22,11 +22,24 @@
           </form>
 
         </div>
+
+        <div v-if="recover" class="modal-body">
+
+          <form @submit.prevent="isDisabled">
+            <p :class="{ 'control': true }">
+              <input ref="emailRecover" id="emailRecover" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('emailRecover') }"
+                     name="emailRecover" type="text" placeholder="Email" v-model="email" data-vv-delay="200" required>
+              <span v-show="errors.has('emailRecover')" class="help is-danger">{{ errors.first('emailRecover') }}</span>
+            </p>
+          </form>
+
+        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button :disabled="isDisabled" @click.prevent="authUser" type="submit" class="btn btn-primary">Login</button>
+          <button :disabled="isDisabled" @click.prevent="authUser" type="submit" class="btn btn-primary">{{ buttonText }}</button>
           <div class="login-help">
-            <a @click.prevent="forgotLogin">Forgot Password</a><span id="emailhelp" class="hidden"> - Please Supply An Email and Try Again</span>
+            <a @click.prevent="forgotLogin">{{ helperText }}</a>
           </div>
         </div>
       </div>
@@ -42,10 +55,13 @@
 //        name: 'Login',
         data () {
             return {
+                recover: false,
                 header: 'Login to Your Account',
                 email: '',
                 password: '',
-                headerText: "Supply On The Fly",
+                headerText: 'Supply On The Fly',
+                buttonText: 'Login',
+                helperText: 'Forgot Password',
             }
         },
         created: function () {
@@ -68,6 +84,7 @@
             }),
             authUser() {
 //                this.login(); //comment out when login works
+
                 this.axios.get(
                     'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
                     {auth: {
@@ -87,26 +104,33 @@
                 );
             },
             forgotLogin() {
-//                jQuery("#password").hide();
-                this.header = "Let's Recover Your Password"
+                this.header = 'Recover Your Account';
+                this.buttonText = 'Recover';
+                this.recover = true;
                 if (this.errors.items.length !== 0){
-                    jQuery("#emailhelp").removeClass("hidden");
+                    this.helperText = 'Please Supply An Email';
                 } else {
-                    this.axios.post('http://localhost:8081/recover', {
-                    login: {
-                        email: this.email,
-                        password: this.randomString(9),
-                    },
-                })
-                    .then(function (response) {
+                    let newPassword = this.randomString(9);
+                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/password/reset', {
+                          username: this.email,
+                          password: newPassword,
+                    }).then(function (response) {
                         console.log(response);
-                    })
-                    .catch(function (error) {
-
+                    }).catch(function (error) {
                         console.log(error);
                     });
-                }
 
+                    this.axios.post('http://localhost:8081/recover', {
+                    login: {
+                        username: this.email,
+                        password: newPassword,
+                    },
+                    }).then(function (response) {
+                      console.log(response);
+                    }).catch(function (error) {
+                      console.log(error);
+                  });
+                }
             },
             randomString(i){
                 let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

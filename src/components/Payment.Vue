@@ -13,9 +13,14 @@
         <span class="checkout-price">Total Sale:
                       <span v-model="saleTotal" class="checkout-num">${{ ( getCartTotal + (getCartTotal * .1)).toFixed(2) }}</span>
                     </span>
-        <div class="modal-body card-wrapper">
+        <div v-if="!purchasedStatus" class="modal-body card-wrapper">
           <form action="#">
             <!--required|credit_card-->
+            <p :class="{ 'control': true }">
+              <input id="cardType" v-validate="'required|alpha_spaces'" :class="{'input': true, 'is-danger': errors.has('fullName') }"
+                     v-model="cardType" data-vv-delay="200" name="cardType" type="text" placeholder="Type of Card">
+              <span v-show="errors.has('cardType')" class="help is-danger">{{ errors.first('cardType') }}</span>
+            </p>
             <p :class="{ 'control': true }">
               <input v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="creditCard"
                      data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number">
@@ -40,7 +45,19 @@
             </p>
 
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button @click.prevent="submitPayment" type="button" :disabled="isDisabled" class="btn btn-primary">Make Payment</button>
+            <button @click.prevent="submitPayment(clearCart)" type="button" :disabled="isDisabled" class="btn btn-primary">Make Payment</button>
+
+          </form>
+        </div>
+
+        <div v-if="purchasedStatus" class="modal-body card-wrapper">
+          <form action="#">
+            <!--required|credit_card-->
+            <p><strong>Thank You!</strong> Your Order Has Been Placed. You will receive a confirmation email shortly.</p>
+
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button @click.prevent="submitPayment(clearCart)" type="button" :disabled="true" class="btn btn-primary">Make Payment</button>
 
           </form>
         </div>
@@ -68,6 +85,8 @@
                 cvv: '',
                 dateExpire: '',
                 nameOnCard: '',
+                cardType: '',
+                purchasedStatus : false,
             }
         },
         created: function () {
@@ -78,7 +97,7 @@
                 isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal',
-                clearCart: 'clearCart',
+
             }),
             isDisabled(){
                 return this.errors.any() || this.creditCard === '';
@@ -87,20 +106,24 @@
         },
         methods: {
             ...mapActions({
-//                returnItemToCart: 'returnItemToCart',
+                clearCart: 'clearCart',
             }),
-            submitPayment() {
+            // add callback to change payment modal ui to "purchase complete check email" and clear the cart
+            submitPayment(cb) {
+                let _this = this;
                 let request = this.formatCartRequest();
-                console.log(request);
+                console.log(JSON.stringify(request));
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/cart/checkout', {
                     request
-                })
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                }).then(function (response) {
+                    cb();
+                    _this.purchasedStatus = true;
+                    console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                    _this.purchasedStatus = true;
+                    cb();
+                });
             },
             purchaseEmail(){
 
@@ -134,24 +157,26 @@
 
                 var cartDetails = {
                     sessionId: cartID,
-                    cartDate: "2017-11-10",
-                    customerId: "kkmJdH83E",
-                    orderItem: [],
+                    cartDate: "2017-12-19",
+                    customerId: "wKJuRDKTF",
+                    itemList: [],
                     paymentMethod: "Visa",
-                    total: 0,
+                    total: '',
                 };
                 currentCart.map(function(item){
-                    cartDetails.orderItem.push(
+                    cartDetails.itemList.push(
                         {
                             price: item.price,
                             quantity: item.cartQuantity,
-                            sessionId: cartID,
+//                            sessionId: cartID,
                             sku: item.sku,
-                            total: item.price * item.cartQuantity
+                            total: (item.price * item.cartQuantity).toFixed(2),
+                            itemLocation: item.location,
                         }
                     )
                     cartDetails.total += (item.price * item.cartQuantity).toFixed(2);
                 });
+                parseFloat(cartDetails.total);
                 return cartDetails;
             },
         }

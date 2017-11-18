@@ -55,6 +55,9 @@
                                         <li>
                                             <a data-toggle="modal" data-target="#updateInformationModal">Profile Information</a>
                                         </li>
+                                        <router-link v-if="getUserData.employee" tag="li" to="/employee_portal">
+                                            <a>Employee Portal</a>
+                                        </router-link>
                                     </ul>
                                 </li>
                             </ul>
@@ -120,7 +123,8 @@
             ...mapGetters({
                 isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
-                getCartTotal: 'getCartTotal'
+                getCartTotal: 'getCartTotal',
+                getUserData: 'getUserData',
             }),
 
         },

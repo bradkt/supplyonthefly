@@ -34,14 +34,14 @@ export default new Router({
         component: FlyCart,
       },
       {
-          path: '/about',
-          name: 'About',
-          component: About,
+        path: '/about',
+        name: 'About',
+        component: About,
       },
       {
-          path: '/employee_portal',
-          name: 'Portal',
-          component: Portal,
+        path: '/employee_portal',
+        name: 'Portal',
+        component: Portal,
       },
       { path: '*',
         component: { template: '<h1>Page is not Found!</h1>'}

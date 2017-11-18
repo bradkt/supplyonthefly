@@ -181,7 +181,6 @@
     .emptyCart{
       height: 70px;
       border: 1px dashed #00BEC5;
-
     }
 
     .lead{
