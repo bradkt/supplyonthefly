@@ -9,7 +9,10 @@
             <p>Price: ${{ product.price }}</p>
             <h5>In Stock: {{ product.quantity }}</h5>
             <p>{{ product.description }}</p>
-            <button @click.prevent="addToCart(product)">Add To Cart</button>
+            <button @click.prevent="addToCart(product)">
+                <span v-if="product.cartQuantity >= 1">{{ dirtyButtonText }}</span>
+                <span v-else>{{ buttonText }}</span>
+            </button>
         </div>
     </section>
 </template>
@@ -28,10 +31,10 @@
         data () {
             return {
                 isLoggedIn: this.isLoggedIn,
-                publishImmediatly: false,
+                buttonText: 'Add To Cart',
+                dirtyButtonText: 'Product In Cart',
             }
         },
-
         computed: {
             ...mapGetters({
                 isLoggedIn: 'isLoggedIn',
@@ -42,11 +45,6 @@
                 addToCart: 'addToCart',
                 removeFromCart: 'removeFromCart'
             }),
-            auth: function(){
-                this.axios.get('').then((response) => {
-                    console.log(response.data)
-                })
-            }
         }
     }
 </script>

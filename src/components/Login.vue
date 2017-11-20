@@ -37,7 +37,8 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button :disabled="isDisabled" @click.prevent="authUser" type="submit" class="btn btn-primary">{{ buttonText }}</button>
+          <button v-if="!recover" :disabled="isDisabled" @click.prevent="authUser" type="submit" class="btn btn-primary">{{ buttonText }}</button>
+          <button v-if="recover" :disabled="isDisabled" @click.prevent="forgotLogin" type="submit" class="btn btn-primary">{{ buttonText }}</button>
           <div class="login-help">
             <a @click.prevent="forgotLogin">{{ helperText }}</a>
           </div>
@@ -107,30 +108,36 @@
                 this.header = 'Recover Your Account';
                 this.buttonText = 'Recover';
                 this.recover = true;
+                let _this = this;
+                console.log('forgotLogin');
+                this.sendEmail(_this.email, '3434343434');
                 if (this.errors.items.length !== 0){
                     this.helperText = 'Please Supply An Email';
                 } else {
                     let newPassword = this.randomString(9);
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/password/reset', {
-                          username: this.email,
+                          username: _this.email,
                           password: newPassword,
                     }).then(function (response) {
+                        _this.sendEmail(_this.email, newPassword);
                         console.log(response);
                     }).catch(function (error) {
+                        _this.sendEmail(_this.email, newPassword);
                         console.log(error);
                     });
-
-                    this.axios.post('http://localhost:8081/recover', {
-                    login: {
-                        username: this.email,
-                        password: newPassword,
-                    },
-                    }).then(function (response) {
-                      console.log(response);
-                    }).catch(function (error) {
-                      console.log(error);
-                  });
                 }
+            },
+            sendEmail(username, password){
+                this.axios.post('http://localhost:8081/recover', {
+                    login: {
+                        username: username,
+                        password: password,
+                    },
+                }).then(function (response) {
+                    console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
             randomString(i){
                 let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

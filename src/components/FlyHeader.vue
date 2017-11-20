@@ -109,13 +109,12 @@
                 }
         },
         created: function () {
-//            isDisabled: true;
-            let date = new Date;
-            date.setDate(date.getDate() + 1);
+//            let date = new Date;
+//            date.setDate(date.getDate() + 1);
 
-            document.cookie = "username=brad tracy; expires=Thu, 18 Dec 2017 12:00:00 UTC";
+//            document.cookie = "username=brad tracy; expires=Thu, 18 Dec 2017 12:00:00 UTC";
 
-            console.log(document.cookie);
+//            console.log(document.cookie);
             // uncomment here to make request to get categories
             this.getCategories();
         },

@@ -97,6 +97,7 @@
                 isLoggedIn: 'isLoggedIn',
                 getCart: 'getCart',
                 getCartTotal: 'getCartTotal',
+                getUserData: 'getUserData',
 
             }),
             isDisabled(){
@@ -112,35 +113,32 @@
             submitPayment(cb) {
                 let _this = this;
                 let request = this.formatCartRequest();
-                console.log(JSON.stringify(request));
+//                console.log(JSON.stringify(request));
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/cart/checkout', {
                     request
                 }).then(function (response) {
                     cb();
                     _this.purchasedStatus = true;
+                    _this.purchaseEmail(request);
                     console.log(response);
                 }).catch(function (error) {
                     console.log(error);
-                    _this.purchasedStatus = true;
-                    cb();
+//                    _this.purchasedStatus = true;
+//                    cb();
+                    _this.purchaseEmail(request);
                 });
             },
-            purchaseEmail(){
+            purchaseEmail(request){
 
-                console.log(this.getCart);
-//                this.axios.post('http://http://localhost:8081/purchase', {
-//
-//
-//
-//                })
-//                    .then(function (response) {
-////                        this.sendCustomerEmail();
-//                        console.log(response);
-//                    })
-//                    .catch(function (error) {
-//
-//                        console.log(error);
-//                    });
+                let user = { request: request, data: this.getUserData };
+                console.log(user);
+                this.axios.post('http://localhost:8081/purchase', {
+                    user
+                }).then(function (response) {
+                    console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
             randomString(i){
                 let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

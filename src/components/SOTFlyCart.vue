@@ -19,7 +19,7 @@
           </div>
         </div>
         <div v-for="product in getCart" class="productInCart">
-            <img class="pull-left" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="Generic placeholder image" width="218" height="218">
+            <img class="pull-left" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="Generic placeholder image">
             <router-link
                     :to="{ name: 'ProductSingle', params: { product: product } }"
                     tag="h4"
@@ -44,7 +44,7 @@
           <button @click.prevent="clearPreviousCartItems">Clear Previous Products</button>
         </div>
           <div v-for="product in previousCart" class="productPreviousInCart">
-            <img class="pull-left" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="SOTF image" height="90">
+            <img class="pull-left" v-bind:src="'http://www.supplyonthefly.site/product-images/' + product.imageName" alt="SOTF image">
             <span class="cart-details pull-left">
               <router-link
                       :to="{ name: 'ProductSingle', params: { product: product } }"
@@ -193,6 +193,11 @@
         border: 1px rgba(50, 50, 50, 0.3) solid;
     }
 
+    .productInCart img {
+      margin: 10px 0 0 10px;
+      height: 190px;
+    }
+
     .previousCartheader {
       height: 50px;
     }
@@ -206,6 +211,11 @@
       margin: 4px 0;
       height: 90px;
       border: 1px rgba(50, 50, 50, 0.3) solid;
+    }
+
+    .productPreviousInCart img {
+      height: 80px;
+      margin: 5px 80px;
     }
 
     .productPreviousInCart .cart-details {

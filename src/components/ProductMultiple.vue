@@ -20,12 +20,12 @@
             <p>Price: ${{ product.price }}</p>
             <h5>In Stock: {{ product.quantity }}</h5>
             <p>{{ product.description }}</p>
-            <button type="button" data-loading-text="Loading..." class="" :class="{disabledButton: isDisabled(product)}"
+            <button type="button" class="" :class="{disabledButton: isDisabled(product)}"
                     ref="addToCartButton" :disabled="isDisabled(product)"
                     autocomplete="off" @click.prevent="addToCart(product)">
                 <span v-if="product.cartQuantity >= 1">{{ dirtyButtonText }}</span>
                 <span v-else>{{ buttonText }}</span>
-                </button>
+            </button>
         </div>
         <div v-show="filteredProducts.length == 0" class="emptyProductReturn productInList">
           <h2>There are no products Matching this search.</h2>
@@ -37,8 +37,6 @@
 
     import { mapGetters } from 'vuex';
     import { mapActions } from 'vuex';
-    //https://getbootstrap.com/docs/3.3/javascript/#buttons-stateful
-
 
     export default {
         props: {
@@ -49,9 +47,14 @@
         name: 'ProductMultiple',
         data () {
             return {
-                searchTerm: '',
+                searchTerm: this.category,
                 buttonText: 'Add To Cart',
                 dirtyButtonText: 'Product In Cart',
+            }
+        },
+        watch: {
+            category: function () {
+                this.searchTerm = this.category;
             }
         },
         created(){
@@ -75,17 +78,6 @@
             ...mapActions({
                 addToCart: "addToCart",
             }),
-            auth: function(){
-                this.axios.get('').then((response) => {
-                    console.log(response.data)
-                })
-            },
-            addProductToCart(){
-//                jQuery('.addToCartButton').on('click', function () {
-//                    jQuery(this).text('Product In Cart'); // button text will be "finished!"
-//                })
-//                this.$refs.addToCartButton.innerText = this.dirtyButtonText;
-            },
             isDisabled(product){
                 if (product.quantity < 1){
                     return true;
@@ -122,8 +114,8 @@
     }
 
     .productInList img {
-        /*width: 215px;*/
-        height: 200px;
+       margin: 10px 0 0 10px;
+        height: 180px;
     }
 
     .product-title {

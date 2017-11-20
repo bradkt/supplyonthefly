@@ -89,9 +89,6 @@
 //        name: 'Register',
         data () {
             return {
-                // rename all these to match the person object,
-                //then employees and coustomers will need their own update endpoint
-                //this can be the same as update password when match email
                 headerText: "Supply On The Fly",
                 passwordVerify: '',
                 person: {
@@ -115,7 +112,6 @@
                     hireDate: '2014-10-10',
                     role: 'NewHireRole',
                 },
-                //{"department":"Accounting","employeeNumber":"0000000000","hireDate":"2014-10-10","role":"position"}
                 customer: {
                     cardIssuer: '',
                         ccFirstname: '',
@@ -133,16 +129,12 @@
         },
         computed: {
             isDisabled(){
-//                return this.errors.any() || this.person.email === '';
-                return false;
+                return this.errors.any() || this.person.email === '';
             },
             verifiedPW(){
                 if(this.person.password === this.passwordVerify){
                     return true;
                 }
-//                else{
-//                    return false;
-//                }
             },
         },
         methods: {
@@ -154,51 +146,43 @@
                 }
             },
             registerCustomer(cb){
-                console.log('register Customer call');
-
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/customer', {
                     customer: this.customer,
                     person: this.person,
-//                    customer: {
-//                        cardIssuer: "",
-//                        ccFirstname: "",
-//                        ccLastname: "",
-//                        customerId: this.randomString(9),
-//                        cvv: "",
-//                        expDate: "",
-//                        imageName: "",
-//                        creditcardNumber: ""
-//                    },
-//                    person: {
-//                        address: "140 Louis Lane",
-//                        altEmail: "tracy@thesuper.com",
-//                        city: "Columbus",
-//                        firstname: "Clark",
-//                        lastname: "Kent",
-//                        login: {
-//                            password: "qwerqwer",
-//                            username: "btracy@oneyoungsters.com"
-//                        },
-//                        phoneNumber: "1-800-312-9951",
-//                        registrationDate: "2017-11-02",
-//                        state: "NY",
-//                        zipcode: "12186"
-//                    }
-                })
-                    .then(function (response) {
+////                    customer: {
+////                        cardIssuer: "",
+////                        ccFirstname: "",
+////                        ccLastname: "",
+////                        customerId: this.randomString(9),
+////                        cvv: "",
+////                        expDate: "",
+////                        imageName: "",
+////                        creditcardNumber: ""
+////                    },
+////                    person: {
+////                        address: "140 Louis Lane",
+////                        altEmail: "tracy@thesuper.com",
+////                        city: "Columbus",
+////                        firstname: "Clark",
+////                        lastname: "Kent",
+////                        login: {
+////                            password: "qwerqwer",
+////                            username: "btracy@oneyoungsters.com"
+////                        },
+////                        phoneNumber: "1-800-312-9951",
+////                        registrationDate: "2017-11-02",
+////                        state: "NY",
+////                        zipcode: "12186"
+////                    }
+                }).then(function (response) {
                         cb();
                         console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-//                this.sendCustomerEmail();
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
             registerEmployee(cb){
-                console.log('register Employee call');
-
                 this.person.login.password = this.randomString(9);
-                console.log(this.person.login);
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/employee', {
                     employee: this.employee,
                     person: this.person,
@@ -223,43 +207,30 @@
 //                        state: "OH",
 //                        zipcode: "43235"
 //                    }
-                })
-                .then(function (response) {
+                }).then(function (response) {
                     cb();
                     console.log(response);
-                })
-                .catch(function (error) {
-
+                }).catch(function (error) {
                     console.log(error);
                 });
-//                this.sendEmployeeEmail();
             },
             sendCustomerEmail(){
-
+                let user = this.person;
                 this.axios.post('http://localhost:8081/customer', {
-
-                    user: this.person,
-
-                })
-                .then(function (response) {
+                    user: user,
+                }).then(function (response) {
                     console.log(response);
-                })
-                .catch(function (error) {
-
+                }).catch(function (error) {
                     console.log(error);
                 });
             },
             sendEmployeeEmail(){
+                let user = this.person;
                 this.axios.post('http://localhost:8081/employee', {
-
-                    user: this.person,
-
-                })
-                .then(function (response) {
+                    user: user,
+                }).then(function (response) {
                     console.log(response);
-                })
-                .catch(function (error) {
-
+                }).catch(function (error) {
                     console.log(error);
                 });
             },

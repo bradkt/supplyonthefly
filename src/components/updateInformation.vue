@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          <h4 class="modal-title">{{ getUserData.person.firstname || 'Customer' }}'s Information</h4>
+          <h4 class="modal-title">Update Account Information</h4>
         </div>
         <div class="modal-body">
           <form>
@@ -74,7 +74,7 @@
               </p>
               <!--required|credit_card-->
               <p :class="{ 'control': true }">
-                <input v-validate="'numeric'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="getUserData.customer.creditcardNumber"
+                <input v-validate="'required|credit_card'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="getUserData.customer.creditcardNumber"
                        data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number">
                 <span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number</span>
               </p>
@@ -125,15 +125,13 @@
 <script>
     import { mapGetters } from 'vuex';
     export default {
-//        name: 'updateInformation',
         data () {
             return {
                 headerText: "Supply On The Fly",
-//                passwordVerify: '',
 //                person: {
 //                    altEmail: '',
-//                    firstName: '',
-//                    lastName: '',
+//                    firstName: this.getUserData.person.firstName || '',
+//                    lastName: this.getUserData.person.lastName || '',
 //                    address: '',
 //                    city: '',
 //                    zipcode: '',
@@ -141,8 +139,8 @@
 //                    phoneNumber: '',
 //                    registrationDate: "2017-11-02",
 //                    login:{
-//                        password: '',
-//                        username: '',
+//                        password: this.getUserData.person.login.password || '',
+//                        username: this.getUserData.person.login.username || '',
 //                    },
 //                },
 //                employee: {
@@ -172,16 +170,7 @@
                 getUserData: 'getUserData'
             }),
             isDisabled(){
-//                return this.errors.any() || this.person.email === '';
-                return false;
-            },
-            verifiedPW(){
-                if(this.person.password === this.passwordVerify){
-                    return true;
-                }
-//                else{
-//                    return false;
-//                }
+                return this.errors.any();
             },
         },
         methods: {
@@ -190,7 +179,9 @@
 
                 if (this.getUserData.customer) {
                     let customerID = this.getUserData.customer.customerId;
+                    let _this = this;
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/customer/profile/' + customerID, {
+                        // this could be failing because I'm useing this inside the callback wrong
                         customer: this.getUserData.customer,
                         person: this.getUserData.person,
                     }).then(function (response) {
