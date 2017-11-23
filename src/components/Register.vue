@@ -8,7 +8,6 @@
         </div>
         <div class="modal-body">
           <form>
-
             <p :class="{ 'control': true }">
               <input id="firstName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('firstName') }"
                      data-vv-delay="300" name="firstName" type="text" placeholder="First Name" v-model="person.firstName" required autofocus>
@@ -84,6 +83,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
 
     export default {
 //        name: 'Register',
@@ -100,7 +100,7 @@
                     zipcode: '',
                     state: '',
                     phoneNumber: '',
-                    registrationDate: "2017-11-02",
+                    registrationDate: this.moment(), //this.moment(new Date()),
                     login:{
                         password: '',
                         username: '',
@@ -109,7 +109,7 @@
                 employee: {
                     department: 'NewHireDepartment',
                     employeeNumber: this.randomString(9),
-                    hireDate: '2014-10-10',
+                    hireDate: this.moment(), //this.moment(new Date()),
                     role: 'NewHireRole',
                 },
                 customer: {
@@ -146,6 +146,7 @@
                 }
             },
             registerCustomer(cb){
+
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/customer', {
                     customer: this.customer,
                     person: this.person,
@@ -182,7 +183,9 @@
                 });
             },
             registerEmployee(cb){
+
                 this.person.login.password = this.randomString(9);
+                console.log(this.person);
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/employee', {
                     employee: this.employee,
                     person: this.person,
@@ -242,8 +245,10 @@
                         i--
                     }
                     return result;
-            }
-
+            },
+            moment: function () {
+                return moment(new Date()).format('YYYY-MM-DD'); //'2017-11-20'
+            },
         }
     }
 

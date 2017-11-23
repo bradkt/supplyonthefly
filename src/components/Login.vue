@@ -14,8 +14,9 @@
                      name="email" type="text" placeholder="Email" v-model="email" data-vv-delay="200" required>
               <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
             </p>
+            <!--alpha_num-->
             <p :class="{ 'control': true }">
-              <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"
+              <input id="password" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('password') }"
                      name="password" type="password" placeholder="Password" data-vv-delay="200" v-model="password" required>
               <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
             </p>
@@ -85,10 +86,11 @@
             }),
             authUser() {
 //                this.login(); //comment out when login works
+                console.log('auth user');
 
                 this.axios.get(
                     'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
-                    {auth: {
+                    { auth: {
                         username: this.email,
                         password: this.password,
                     }
@@ -98,23 +100,36 @@
                             jQuery('#LoginModal').modal('hide');
                             console.log(response);
                             this.addUserData(response.data);
+                            if (response.data.employee) {
+                                this.empLogin();
+                            }
                         },
                         (error) => {
                             console.log(error);
                         }
                 );
             },
+            empLogin(){
+                let _this = this;
+                setTimeout(function(){
+                    _this.$router.push({ path: 'employee_portal' });
+                }, 200);
+            },
             forgotLogin() {
                 this.header = 'Recover Your Account';
                 this.buttonText = 'Recover';
                 this.recover = true;
+
                 let _this = this;
                 console.log('forgotLogin');
-                this.sendEmail(_this.email, '3434343434');
+
+
+//                this.sendEmail(_this.email, '3434343434');
                 if (this.errors.items.length !== 0){
                     this.helperText = 'Please Supply An Email';
                 } else {
                     let newPassword = this.randomString(9);
+                    console.log('new password: ' + newPassword)
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/password/reset', {
                           username: _this.email,
                           password: newPassword,
@@ -122,7 +137,7 @@
                         _this.sendEmail(_this.email, newPassword);
                         console.log(response);
                     }).catch(function (error) {
-                        _this.sendEmail(_this.email, newPassword);
+//                        _this.sendEmail(_this.email, newPassword);
                         console.log(error);
                     });
                 }

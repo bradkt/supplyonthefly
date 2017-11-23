@@ -13,7 +13,7 @@
           <img class="round-corners" src="http://www.supplyonthefly.site/product-images/monitor_03.jpg" alt="Generic placeholder image" width="180">
           <h2>Monitors</h2>
           <router-link
-                  :to="{ name: 'ProductMultiple', params: { category: 'Monitor' } }"
+                  :to="{ name: 'ProductMultiple', params: { category: 'Computer Supplies' } }"
                   tag="p"
                   class="btn btn-default">
             <a href="#">View details &raquo;</a>
@@ -25,7 +25,7 @@
           <h2>Printers</h2>
 
           <router-link
-                 :to="{ name: 'ProductMultiple', params: { category: 'Print' } }"
+                 :to="{ name: 'ProductMultiple', params: { category: 'Printers' } }"
                  tag="p"
                  class="btn btn-default">
             <a href="#">View details &raquo;</a>
@@ -37,7 +37,7 @@
           <img class="round-corners" src="http://www.supplyonthefly.site/product-images/keyboard_03.jpg" alt="Generic placeholder image" width="180">
           <h2>Keyboards</h2>
           <router-link
-                  :to="{ name: 'ProductMultiple', params: { category: 'Keyboard' } }"
+                  :to="{ name: 'ProductMultiple', params: { category: 'Computer Supplies' } }"
                   tag="p"
                   class="btn btn-default">
             <a href="#">View details &raquo;</a>

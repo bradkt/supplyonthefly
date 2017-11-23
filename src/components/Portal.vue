@@ -49,6 +49,7 @@
               <option>Personal Day</option>
               <option>Vacation</option>
             </select>
+            <button :disabled="isDisabled" @click.prevent="submitTimeOff" class="btn btn-primary">Submit</button>
           </div>
         </div>
       </div>
@@ -131,6 +132,9 @@
                 getUserData: 'getUserData',
                 isLoggedIn: 'isLoggedIn',
             }),
+            isDisabled(){
+                return false;
+            },
         },
         methods: {
             showEmp(emp) {
@@ -140,7 +144,10 @@
                       "email -         " + emp.email + "\n " +
                       "phone -         " + emp.phone + "\n "
                 );
-            }
+            },
+            submitTimeOff(){
+                alert("Your Request Has been Submitted.");
+            },
         },
     }
 
@@ -148,7 +155,8 @@
 
 <style scoped>
 
-  section {
+  button{
+    margin: 10px 50%;
   }
 
   .list {

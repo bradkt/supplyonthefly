@@ -7,7 +7,7 @@ import FlyCart from '../components/SOTFlyCart.vue'
 import About from '../components/About.vue'
 import Portal from '../components/Portal.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [

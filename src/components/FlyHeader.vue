@@ -118,6 +118,11 @@
             // uncomment here to make request to get categories
             this.getCategories();
         },
+        watch: {
+            isLoggedIn: function () {
+                this.$router.push('/');
+            }
+        },
         computed: {
             ...mapGetters({
                 isLoggedIn: 'isLoggedIn',
@@ -135,7 +140,6 @@
             getCategories(){
                 this.axios.get('http://supplyonthefly.business:8080/capstone-website-api/product/category').then((response) => {
                     this.categories = response.data.list;
-//                    console.log(response.data);
                 })
             },
 

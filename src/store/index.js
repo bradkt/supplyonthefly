@@ -52,7 +52,7 @@ export default new Vuex.Store({
         },
         incrementQuantity(state, payload) {
             state.cart.items.map(function(item, i){
-                if(item.sku == payload.sku){
+                if(item.sku == payload.sku && payload.quantity >= payload.cartQuantity){
                     item["cartQuantity"] += 1;
                     item["quantity"] -= 1;
                     state.cart.items.splice(i, 1, item);
@@ -61,7 +61,7 @@ export default new Vuex.Store({
         },
         decrementQuantity(state, payload) {
             state.cart.items.map(function(item, i){
-                if(item.sku == payload.sku){
+                if(item.sku == payload.sku && payload.cartQuantity > 0){
                     item["cartQuantity"] -= 1;
                     item["quantity"] += 1;
                     state.cart.items.splice(i, 1, item);

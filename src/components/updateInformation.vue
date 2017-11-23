@@ -176,30 +176,34 @@
         methods: {
             updateData(){
                 console.log(JSON.stringify(this.getUserData));
-
                 if (this.getUserData.customer) {
+                    console.log("------------------Customer----------");
                     let customerID = this.getUserData.customer.customerId;
-                    let _this = this;
-                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/customer/profile/' + customerID, {
-                        // this could be failing because I'm useing this inside the callback wrong
-                        customer: this.getUserData.customer,
-                        person: this.getUserData.person,
-                    }).then(function (response) {
-                            console.log(response);
-                    }).catch(function (error) {
-                            console.log(error);
-                    });
+                    console.log(customerID);
+                    console.log(this.getUserData);
+//                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/customer/profile/' + customerID, {
+//                        // this could be failing because I'm useing this inside the callback wrong
+//                        customer: this.getUserData.customer,
+//                        person: this.getUserData.person,
+//                    }).then(function (response) {
+//                            console.log(response);
+//                    }).catch(function (error) {
+//                            console.log(error);
+//                    });
                 }
                 if (this.getUserData.employee) {
                     let employeeID = this.getUserData.employee.employeeNumber;
-                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/employee/profile/' + employeeID, {
-                        customer: this.getUserData.employee,
-                        person: this.getUserData.person,
-                    }).then(function (response) {
-                            console.log(response);
-                    }).catch(function (error) {
-                            console.log(error);
-                    });
+                    console.log("------------------Employee----------");
+                    console.log(employeeID);
+                    console.log(this.getUserData);
+//                    this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/employee/profile/' + employeeID, {
+//                        customer: this.getUserData.employee,
+//                        person: this.getUserData.person,
+//                    }).then(function (response) {
+//                            console.log(response);
+//                    }).catch(function (error) {
+//                            console.log(error);
+//                    });
                 }
 
             },

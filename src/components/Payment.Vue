@@ -75,10 +75,12 @@
     import { mapActions } from 'vuex';
     import { mapGetters } from 'vuex';
     import { Validator } from 'vee-validate';
+    import moment from 'moment'
 
     export default {
         data () {
             return {
+                today: this.moment(new Date()),
                 productTotal: '',
                 saleTotal: '',
                 creditCard: '',
@@ -113,7 +115,8 @@
             submitPayment(cb) {
                 let _this = this;
                 let request = this.formatCartRequest();
-//                console.log(JSON.stringify(request));
+                console.log(JSON.stringify(request));
+                console.log(request);
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/cart/checkout', {
                     request
                 }).then(function (response) {
@@ -125,11 +128,10 @@
                     console.log(error);
 //                    _this.purchasedStatus = true;
 //                    cb();
-                    _this.purchaseEmail(request);
+//                    _this.purchaseEmail(request);
                 });
             },
             purchaseEmail(request){
-
                 let user = { request: request, data: this.getUserData };
                 console.log(user);
                 this.axios.post('http://localhost:8081/purchase', {
@@ -149,16 +151,19 @@
                 }
                 return result;
             },
+            moment: function () {
+                return moment(new Date()).format('YYYY-MM-DD'); //'2017-11-20'
+            },
             formatCartRequest(){
                 let currentCart = this.getCart;
                 let cartID = this.randomString(9);
 
                 var cartDetails = {
                     sessionId: cartID,
-                    cartDate: "2017-12-19",
-                    customerId: "wKJuRDKTF",
+                    cartDate: this.moment(),
+                    customerId: this.getUserData.customer.customerId,
                     itemList: [],
-                    paymentMethod: "Visa",
+                    paymentMethod: this.cardType,
                     total: '',
                 };
                 currentCart.map(function(item){
@@ -171,10 +176,11 @@
                             total: (item.price * item.cartQuantity).toFixed(2),
                             itemLocation: item.location,
                         }
-                    )
+                    );
                     cartDetails.total += (item.price * item.cartQuantity).toFixed(2);
                 });
                 parseFloat(cartDetails.total);
+                console.log(currentCart);
                 return cartDetails;
             },
         }

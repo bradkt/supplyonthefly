@@ -47,14 +47,9 @@
         name: 'ProductMultiple',
         data () {
             return {
-                searchTerm: this.category,
+                searchTerm: '',
                 buttonText: 'Add To Cart',
                 dirtyButtonText: 'Product In Cart',
-            }
-        },
-        watch: {
-            category: function () {
-                this.searchTerm = this.category;
             }
         },
         created(){
@@ -69,8 +64,13 @@
                 getProducts: 'getProducts',
             }),
             filteredProducts(){
-                return this.getProducts.list.filter((product) => {
+                return this.productsInCategory.filter((product) => {
                     return product.name.match(new RegExp(this.searchTerm, 'i'));
+                })
+            },
+            productsInCategory(){
+                return this.getProducts.list.filter((product) => {
+                    return product.category.match(this.category);
                 })
             }
         },
