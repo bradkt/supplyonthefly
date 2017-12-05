@@ -22,19 +22,6 @@ Vue.component('flyFooter', Footer);
 Vue.use(VueAxios, axios);
 Vue.use(VeeValidate);
 
-
-//axios.defaults.baseURL = 'https://api.example.com';
-// axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-// Vue.http.headers.common['Access-Control-Request-Method'] = 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
-// Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
-
-// Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
-// Vue.http.headers.common['Access-Control-Allow-Credentials'] = "true";
-// Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*, application/vnd.sun.wadl+xml';
-
-/* eslint-disable no-new */
-
 new Vue({
   el: '#app',
   router,

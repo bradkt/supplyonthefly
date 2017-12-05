@@ -29,8 +29,8 @@
             <p>Price: {{ product.price }}</p>
             <p class="quantity-controls">
                 <span>Quantity: {{ product.cartQuantity }}</span>
-                <span @click="incrementQuantity(product)" class="glyphicon glyphicon-circle-arrow-up"></span>
-                <span @click="decrementQuantity(product)" class="glyphicon glyphicon-circle-arrow-down"></span>
+                <span @click="incrementQuantity(product)"><icon name="arrow-up" scale="1"></icon></span>
+                <span @click="decrementQuantity(product)"><icon name="arrow-down" scale="1"></icon></span>
             </p>
             <!--<button @click.prevent="addToCart">Add To Cart</button> make button to increase inventory-->
             <button @click.prevent="removeFromCart(product)">Remove From Cart</button>

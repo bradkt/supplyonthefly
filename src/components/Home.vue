@@ -11,48 +11,54 @@
 
         <div class="col-md-3">
           <img class="round-corners" src="http://www.supplyonthefly.site/product-images/monitor_03.jpg" alt="Generic placeholder image" width="180">
-          <h2>Monitors</h2>
-          <router-link
-                  :to="{ name: 'ProductMultiple', params: { category: 'Computer Supplies' } }"
-                  tag="p"
-                  class="btn btn-default">
-            <a href="#">View details &raquo;</a>
-          </router-link>
+          <div class="category-info">
+            <h2>Monitors</h2>
+            <router-link
+                    :to="{ name: 'ProductMultiple', params: { category: 'Computer Supplies' } }"
+                    tag="p"
+                    class="btn btn-default">
+              <a href="#">View details &raquo;</a>
+            </router-link>
+          </div>
         </div><!-- /.col-lg-4 -->
 
         <div class="col-md-3">
           <img class="round-corners" src="http://www.supplyonthefly.site/product-images/printer02.jpg" alt="Generic placeholder image" width="180">
-          <h2>Printers</h2>
-
-          <router-link
-                 :to="{ name: 'ProductMultiple', params: { category: 'Printers' } }"
-                 tag="p"
-                 class="btn btn-default">
-            <a href="#">View details &raquo;</a>
-          </router-link>
-
+          <div class="category-info">
+            <h2>Printers</h2>
+            <router-link
+                   :to="{ name: 'ProductMultiple', params: { category: 'Printers' } }"
+                   tag="p"
+                   class="btn btn-default">
+              <a href="#">View details &raquo;</a>
+            </router-link>
+          </div>
         </div><!-- /.col-lg-4 -->
 
         <div class="col-md-3">
           <img class="round-corners" src="http://www.supplyonthefly.site/product-images/keyboard_03.jpg" alt="Generic placeholder image" width="180">
-          <h2>Keyboards</h2>
-          <router-link
-                  :to="{ name: 'ProductMultiple', params: { category: 'Computer Supplies' } }"
-                  tag="p"
-                  class="btn btn-default">
-            <a href="#">View details &raquo;</a>
-          </router-link>
+          <div class="category-info">
+            <h2>Keyboards</h2>
+            <router-link
+                    :to="{ name: 'ProductMultiple', params: { category: 'Computer Supplies' } }"
+                    tag="p"
+                    class="btn btn-default">
+              <a href="#">View details &raquo;</a>
+            </router-link>
+          </div>
         </div>
 
         <div class="col-md-3">
           <img class="round-corners" src="http://www.supplyonthefly.site/product-images/laptop_computer_03.jpg" alt="Generic placeholder image" width="180">
-          <h2>Laptops</h2>
-          <router-link
-                  :to="{ name: 'ProductMultiple', params: { category: 'Laptop' } }"
-                  tag="p"
-                  class="btn btn-default">
-            <a href="#">View details &raquo;</a>
-          </router-link>
+          <div class="category-info">
+            <h2>Laptops</h2>
+            <router-link
+                    :to="{ name: 'ProductMultiple', params: { category: 'Laptop' } }"
+                    tag="p"
+                    class="btn btn-default">
+              <a href="#">View details &raquo;</a>
+            </router-link>
+          </div>
         </div><!-- /.col-lg-4 -->
 
       </div><!-- /.row -->
@@ -114,7 +120,23 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  
+
+
+
+  .category-images div {
+    min-height: 150px;
+
+  }
+
+  .category-info {
+
+
+  }
+
+  .featurette-divider{
+    margin: 40px 0;
+  }
+
   .round-corners {
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
@@ -122,6 +144,6 @@
   }
 
   .lead {
-    margin: 15px 0;
+    margin: 0px 0 90px 0;
   }
 </style>

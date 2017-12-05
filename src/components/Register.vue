@@ -2,11 +2,13 @@
   <div class="modal fade" id="RegisterModal" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
+
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           <h4 class="modal-title">Register An Account</h4>
         </div>
-        <div class="modal-body">
+
+        <div class="modal-body" v-if="!registerSuccess">
           <form>
             <p :class="{ 'control': true }">
               <input id="firstName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('firstName') }"
@@ -33,20 +35,20 @@
             </p>
 
             <p :class="{ 'control': true }">
-              <input ref="city" id="city" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('alpha') }"
+              <input ref="city" id="city" v-validate="'required|alpha_spaces'" :class="{'input': true, 'is-danger': errors.has('alpha') }"
                      data-vv-delay="300" name="city" type="text" placeholder="City" v-model="person.city" required>
               <span v-show="errors.has('alpha')" class="help is-danger">{{ errors.first('alpha') }}</span>
             </p>
 
             <p :class="{ 'control': true }">
-              <input ref="state" id="state" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('alpha') }"
+              <input ref="state" id="state" v-validate="{ required: true, regex: /^[A-z]{2}$/g }" :class="{'input': true, 'is-danger': errors.has('alpha') }"
                      data-vv-delay="300" name="state" type="text" placeholder="State ex: OH" v-model="person.state" required>
               <span v-show="errors.has('alpha')" class="help is-danger">{{ errors.first('alpha') }}</span>
             </p>
 
             <p :class="{ 'control': true }">
               <input ref="zipcode" id="zipcode" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('numeric') }"
-                     data-vv-delay="300" name="zipcode" type="text" placeholder="Zip Code" v-model="person.zipcode" required>
+                     data-vv-delay="300" name="zipcode" type="text" placeholder="Zip Code (ex: 43235)" v-model="person.zipcode" required>
               <span v-show="errors.has('numeric')" class="help is-danger">{{ errors.first('numeric') }}</span>
             </p>
 
@@ -69,6 +71,14 @@
           </form>
 
         </div>
+
+        <div v-if="registerSuccess" class="modal-body card-wrapper">
+          <form>
+            <p><strong>{{ RegisterMessage }}</strong></p>
+            <p>{{ RegisterSubMessage }}</p>
+          </form>
+        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
@@ -90,6 +100,9 @@
         data () {
             return {
                 headerText: "Supply On The Fly",
+                registerSuccess: false,
+                RegisterMessage: 'Thank You For Registering!',
+                RegisterSubMessage: 'You will receive a confirmation email shortly. Pick out items today and have them as early as tomorrow!',
                 passwordVerify: '',
                 person: {
                     altEmail: '',
@@ -146,73 +159,33 @@
                 }
             },
             registerCustomer(cb){
-
+                let _this = this;
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/customer', {
                     customer: this.customer,
                     person: this.person,
-////                    customer: {
-////                        cardIssuer: "",
-////                        ccFirstname: "",
-////                        ccLastname: "",
-////                        customerId: this.randomString(9),
-////                        cvv: "",
-////                        expDate: "",
-////                        imageName: "",
-////                        creditcardNumber: ""
-////                    },
-////                    person: {
-////                        address: "140 Louis Lane",
-////                        altEmail: "tracy@thesuper.com",
-////                        city: "Columbus",
-////                        firstname: "Clark",
-////                        lastname: "Kent",
-////                        login: {
-////                            password: "qwerqwer",
-////                            username: "btracy@oneyoungsters.com"
-////                        },
-////                        phoneNumber: "1-800-312-9951",
-////                        registrationDate: "2017-11-02",
-////                        state: "NY",
-////                        zipcode: "12186"
-////                    }
                 }).then(function (response) {
                         cb();
                         console.log(response);
+                        _this.registerSuccess = true;
+                        _this.clearform();
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
             registerEmployee(cb){
-
-                this.person.login.password = this.randomString(9);
+                let _this = this;
+                let password = this.randomString(9);
                 console.log(this.person);
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/employee', {
                     employee: this.employee,
                     person: this.person,
-//                    employee: {
-//                        department: "",
-//                        employeeNumber: this.randomString(9),//
-//                        hireDate: "2017-11-02",
-//                        role: "",
-//                    },
-//                    person: {
-//                        address: "140 Louis Lane",
-//                        altEmail: "tracy@oneonesupplyonthefly.com",
-//                        city: "Columbus",
-//                        firstname: "Clark",
-//                        lastname: "Kent",
-//                        login: {
-//                            password: "qwerqwer",
-//                            username: "tracy@supplyonthefly.com"
-//                        },
-//                        phoneNumber: "1-800-322-5951",
-//                        registrationDate: "2017-11-02",
-//                        state: "OH",
-//                        zipcode: "43235"
-//                    }
                 }).then(function (response) {
-                    cb();
+                    cb(password);
                     console.log(response);
+                    _this.registerSuccess = true;
+                    _this.RegisterMessage = 'Thank You for submitting your employee Profile';
+                    _this.RegisterSubMessage = 'You will soon receive an email containing your password to login';
+                    _this.clearform();
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -227,7 +200,8 @@
                     console.log(error);
                 });
             },
-            sendEmployeeEmail(){
+            sendEmployeeEmail(password){
+                this.person.login.password = password;
                 let user = this.person;
                 this.axios.post('http://localhost:8081/employee', {
                     user: user,
@@ -249,6 +223,39 @@
             moment: function () {
                 return moment(new Date()).format('YYYY-MM-DD'); //'2017-11-20'
             },
+            clearform(){
+                this.person = {
+                        altEmail: '',
+                        firstName: '',
+                        lastName: '',
+                        address: '',
+                        city: '',
+                        zipcode: '',
+                        state: '',
+                        phoneNumber: '',
+                        registrationDate: '',
+                        login:{
+                        password: '',
+                            username: '',
+                    },
+                },
+                this.employee = {
+                    department: '',
+                        employeeNumber: '',
+                        hireDate: '',
+                        role: '',
+                },
+                this.customer = {
+                    cardIssuer: '',
+                        ccFirstname: '',
+                        ccLastname: '',
+                        creditcardNumber: '',
+                        customerId: '',
+                        cvv: '',
+                        expDate: '',
+                        imageName: '',
+                }
+            }
         }
     }
 

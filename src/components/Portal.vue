@@ -2,7 +2,7 @@
   <section>
 
     <div class="row">
-      <div class="container-fluid bg-top text-center">
+      <div class="container-fluid bg-1 text-center">
         <h2>Welcome To your Employee Page, {{ getUserData.person.firstname }}</h2>
         <div class="earned-days-off">
           <div class="dayOffBlock"><span class="label">Employee ID: </span><span class="med-num">{{ getUserData.employee.employeeNumber }}</span></div>
@@ -15,35 +15,51 @@
 
 
     <div class="row">
-      <div class="container-fluid bg-2 text-center col-sm-6">
-        <h3 class="">Documents & Training Guides</h3>
+      <div class="container-fluid bg-2 text-center">
+        <h3 class="">Documents & Upcoming Marketing Programs</h3>
         <ul class="list">
           <li v-for="doc in documents">
-            <a href="">{{ doc.title }}</a>
+            <a v-bind:href="doc.url">{{ doc.title }}</a>
+          </li>
+        </ul>
+      </div>
+
+
+
+    </div> <!--End Row-->
+
+    <div class="row">
+
+      <div class="container-fluid bg-2 text-center col-sm-6">
+        <h3 class="">Training</h3>
+        <ul class="list">
+          <li v-for="doc in training">
+            <a v-bind:href="doc.url">{{ doc.title }}</a>
           </li>
         </ul>
       </div>
 
       <div class="container-fluid bg-2 text-center col-sm-6">
         <h3 class="">Holiday Schedule</h3>
-          <ul class="list">
-            <li v-for="day in holidays">
-              <span>{{ day.name }}</span><span>{{ day.date }}</span>
-            </li>
-          </ul>
+        <ul class="list">
+          <li v-for="day in holidays">
+            <span>{{ day.name }}</span><span>{{ day.date }}</span>
+          </li>
+        </ul>
       </div>
 
-    </div> <!--End Row-->
+    </div>
 
     <div class="row">
 
-      <div class="container-fluid bg-1 text-center col-sm-6">
+      <div class="container-fluid bg-1">
         <div class="timeOff">
           <h3 class="">Time Off Requests</h3>
-          <div class="list">
-            <label>Begin: </label><datepicker v-model="fromDate" class="datepicker input" :disabled="dateDisabled"></datepicker>
-            <label>End : </label><datepicker v-model="toDate" class="datepicker input"></datepicker>
-            <label>Reason : </label><select v-model="reasonSelected" class="input">
+          <div class="list full-width">
+            <label>Begin: </label><datepicker v-model="fromDate" class="datepicker input" :disabled="startDateDisabled"></datepicker>
+            <label>End : </label><datepicker v-model="toDate" class="datepicker input" :disabled="endDateDisabled"></datepicker>
+
+            <select v-model="reasonSelected" class="input">
               <option disabled value="">Please select Reason</option>
               <option>Sick Day</option>
               <option>Personal Day</option>
@@ -53,12 +69,14 @@
           </div>
         </div>
       </div>
+    </div>  <!--End Row-->
 
-      <div class="container-fluid bg-1 text-center col-sm-6">
+    <div class="row">
+      <div class="container-fluid bg-2 text-center">
         <h3 class="">Employee Directory</h3>
-        <ul class="list">
+        <ul class="employee-list">
           <li v-for="emp in employees">
-            <a @click="showEmp(emp)">{{ emp.name }}</a><span>{{ emp.position }}</span>
+            <a @click="showEmp(emp)">{{ emp.name }}</a><span>{{ emp.position }}</span><span>{{ emp.phone }}</span>
           </li>
         </ul>
       </div>
@@ -79,11 +97,16 @@
         },
         data() {
             return {
-                fromDate: new Date(2017, 11,  16),
-                toDate: new Date(2017, 11,  16),
-                dateDisabled: {
-                    to: new Date(2018, 0, 1), // Disable all dates up to specific date
-                    from: new Date(2017, 0, 31), // Disable all dates after specific date
+                fromDate: new Date(2017, 10, 10),
+                toDate: new Date(2017, 11,  12),
+                startDateDisabled: {
+                    to: new Date(2017, 11, 1), // Disable all dates up to specific date
+                    from: new Date(2018, 11, 31), // Disable all dates after specific date
+                    days: [6, 0], // Disable Saturday's and Sunday's
+                },
+                endDateDisabled: {
+                    to: new Date(2017, 11, 1), // Disable all dates up to specific date
+                    from: new Date(2018, 11, 31), // Disable all dates after specific date
                     days: [6, 0], // Disable Saturday's and Sunday's
                 },
                 reasonSelected: '',
@@ -95,12 +118,30 @@
                             "day4": { name: "Memorial Day", date: "May 15, 2017"},
                             "day5": { name: "Labor Day", date: "September 15, 2017"},
                 },
-                documents: {"doc1": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
-                            "doc2": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Christmas Marketing Preview"},
-                            "doc3": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
-                            "doc4": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
-                            "doc5": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
-                            "doc6": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
+                documents: {
+                    "doc1": { url: "https://www.irs.gov/pub/irs-pdf/fw4.pdf", title: "W4 on the IRS site"},
+                    "doc2": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Company History"},
+                    "doc14": { url: "http://www.supplyonthefly.site/documents/Mission-Statement.pdf", title: "Mission Statement PDF"},
+                    "doc3": { url: "https://www.uscis.gov/sites/default/files/files/form/i-9.pdf", title: "I-9 on the IRS site"},
+                    "doc4": { url: "http://www.supplyonthefly.site/images/EmployeeBadges-SotF.png", title: "Employee Badge"},
+                    "doc5": { url: "http://www.supplyonthefly.site/images/PayStub-SotF.png", title: "Pay Stub"},
+                    "doc6": { url: "http://www.supplyonthefly.site/images/TimeOffRequest-SotF.png", title: "Christmas Marketing Preview"},
+                    "doc7": { url: "http://www.supplyonthefly.site/images/TimeOffRequest-SotF.png", title: "Company History"},
+                    "doc8": { url: "http://www.supplyonthefly.site/images/Website-Promo-2.png", title: "OnLine Promo"},
+                    "doc9": { url: "http://www.supplyonthefly.site/images/Website-Promo-1.png", title: "Printer Ink Sale"},
+                    "doc10": { url: "http://www.supplyonthefly.site/images/jamie-card.png", title: "Sample Business Card"},
+                    "doc11": { url: "http://www.supplyonthefly.site/images/FlyerPromoChristmas.png", title: "Christmas Promo"},
+                    "doc12": { url: "http://www.supplyonthefly.site/images/FlyerPromoReponing.png", title: "Reopening Promo"},
+                    "doc13": { url: "http://www.supplyonthefly.site/images/WebsitePromoNewYear.png", title: "New Year Promo"},
+                },
+                training: {
+                    "doc1": { url: "https://www.irs.gov/pub/irs-pdf/fw4.pdf", title: "Employee Web Portal"},
+                    "doc2": { url: "http://www.supplyonthefly.site/documents/Company-History.pdf", title: "Shopping Site"},
+                    "doc14": { url: "http://www.supplyonthefly.site/documents/Mission-Statement.pdf", title: "Financial Application"},
+                    "doc3": { url: "https://www.uscis.gov/sites/default/files/files/form/i-9.pdf", title: "Inventory Management Application"},
+                    "doc4": { url: "http://www.supplyonthefly.site/images/EmployeeBadges-SotF.png", title: "Network"},
+                    "doc5": { url: "http://www.supplyonthefly.site/images/PayStub-SotF.png", title: "Quick How Tos"},
+                    "doc6": { url: "http://www.supplyonthefly.site/images/TimeOffRequest-SotF.png", title: "Other Resources"},
                 },
                 employees: {"emp1": { id: "1234qwer", position: "Web Developer", name: "Brad Tracy", phone: "(614)555-5555",
                                 email: "brad@supplyonthefly.site", sickDaysRemain: "2", vacationDaysRemain: "6", hireDate: "",
@@ -159,6 +200,11 @@
     margin: 10px 50%;
   }
 
+  h2 {
+    color: white;
+    margin-bottom: 40px;
+  }
+
   .list {
     font-size: 18px;
     border: solid 1px dimgrey;
@@ -174,13 +220,63 @@
     margin: 5px 0;
   }
 
-  .timeOff {
-    text-align: left;
-    padding: 0 0 0 8%;
+  .full-width {
+    width: 95%;
   }
 
-  .datepicker {
+  .employee-list{
+    font-size: 18px;
+    border: solid 1px dimgrey;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px 10px;
+
+  }
+
+  .employee-list li {
+    margin: 8px 10px;
+    text-align: center;
+  }
+
+  .bg-2 .employee-list span {
+    display: inline-block;
+    border-left: 2px solid white;
+    padding: 0 12px;
+    margin: 10px 10px;
+    width: 200px;
+  }
+
+  .bg-2 .employee-list a {
+    display: inline-block;
+    padding: 0 12px;
+    margin: 10px 10px;
+    width: 180px;
+  }
+
+  .timeOff {
+    color: #474e5d;
+  }
+
+  .timeOff .full-width div {
+    display: inline-block;
+    margin: 30px 55px;
+
+  }
+
+  .timeOff select {
+    width: 350px;
     display: block;
+  }
+
+  /*.timeOff label {*/
+    /*display: block;*/
+  /*}*/
+
+  .datepicker {
+    display: inline-block;
   }
 
   .input {
@@ -196,30 +292,36 @@
     margin: 25px 0 10px 0;
   }
 
-  .bg-top {
-    background-color: #00BEC5;
-    color: #ffffff;
-    min-height: 300px;
-  }
+  /*.bg-top {*/
+    /*background-color: #00BEC5;*/
+    /*color: #ffffff;*/
+    /*min-height: 300px;*/
+  /*}*/
+
   .bg-2 {
     background-color: #474e5d; /* Dark Blue */
     color: #ffffff;
     min-height: 500px;
   }
+
   .bg-1 {
     background-color: #00BEC5;
-    color: #ffffff;
-    min-height: 550px;
+    color: #474e5d;
+    min-height: 400px;
   }
+
   .bg-2 a, .bg-2 span, .bg-2 span, .bg-1 a {
     margin: 5px 20px 5px 0px;
   }
+
   .bg-2 ul li, .bg-1 ul li {
     list-style-type: none;
   }
+
   a {
     color: whitesmoke;
   }
+
   .container-fluid {
     padding-top: 70px;
     padding-bottom: 70px;
@@ -233,13 +335,14 @@
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    width: 200px;
+    width: 250px;
     height: 150px;
   }
 
   .label {
     display: block;
     margin: 0 0 10px 0;
+    color: #474e5d;
   }
 
   .earned-days-off span {

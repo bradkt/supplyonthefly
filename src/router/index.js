@@ -6,6 +6,7 @@ import ProductSingle from '../components/ProductSingle.vue'
 import FlyCart from '../components/SOTFlyCart.vue'
 import About from '../components/About.vue'
 import Portal from '../components/Portal.vue'
+import fourOfour from '../components/fourOfour.vue'
 
 Vue.use(Router);
 
@@ -44,7 +45,8 @@ export default new Router({
         component: Portal,
       },
       { path: '*',
-        component: { template: '<h1>Page is not Found!</h1>'}
+        name: 'fourOfour',
+        component: fourOfour,
       },
 
   ]

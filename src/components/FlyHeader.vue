@@ -21,8 +21,8 @@
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="#">Home</a></li>
-                                <li><a href="#about">About</a></li>
+                                <li data-toggle="collapse" data-target="#navbar" class="active"><a href="#">Home</a></li>
+                                <li data-toggle="collapse" data-target="#navbar"><a href="#about">About</a></li>
                                 <li><a data-toggle="modal" data-target="#ContactModal" class="menu-item">Contact</a></li>
                                 <li class="dropdown menu-item">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Categories <span class="caret"></span></a>
@@ -31,7 +31,7 @@
                                                 :to="{ name: 'ProductMultiple', params: { category: category } }"
                                                 tag="li"
                                                 class="">
-                                            <a href="#">{{ category }}</a>
+                                            <a data-toggle="collapse" data-target="#navbar" href="#">{{ category }}</a>
                                         </router-link>
                                     </ul>
                                 </li>

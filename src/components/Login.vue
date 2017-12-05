@@ -76,7 +76,6 @@
             isDisabled(){
                 return this.errors.any() || this.email === '';
             },
-
         },
         methods: {
             ...mapActions({
@@ -87,6 +86,7 @@
             authUser() {
 //                this.login(); //comment out when login works
                 console.log('auth user');
+                let _this = this;
 
                 this.axios.get(
                     'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
@@ -98,6 +98,8 @@
                 ).then((response) => {
                             this.login();
                             jQuery('#LoginModal').modal('hide');
+                            _this.email = '';
+                            _this.password = '';
                             console.log(response);
                             this.addUserData(response.data);
                             if (response.data.employee) {
@@ -122,20 +124,23 @@
 
                 let _this = this;
                 console.log('forgotLogin');
-
-
 //                this.sendEmail(_this.email, '3434343434');
                 if (this.errors.items.length !== 0){
                     this.helperText = 'Please Supply An Email';
                 } else {
                     let newPassword = this.randomString(9);
-                    console.log('new password: ' + newPassword)
+                    let encodedPassword = window.btoa(newPassword);
+                    console.log('new password: ' + newPassword);
+                    console.log('password encoded: ' + encodedPassword);
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/password/reset', {
                           username: _this.email,
-                          password: newPassword,
+                          password: encodedPassword,
                     }).then(function (response) {
                         _this.sendEmail(_this.email, newPassword);
                         console.log(response);
+                        _this.recover = false;
+                        _this.email = '';
+                        jQuery('#LoginModal').modal('hide');
                     }).catch(function (error) {
 //                        _this.sendEmail(_this.email, newPassword);
                         console.log(error);
