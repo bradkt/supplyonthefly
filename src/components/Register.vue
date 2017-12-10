@@ -18,20 +18,20 @@
 
             <p :class="{ 'control': false }">
               <input id="lastName" v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('lastName') }"
-                     data-vv-delay="300" name="lastName" type="text" placeholder="Last Name" v-model="person.lastName" required>
+                     data-vv-delay="300" name="lastName" type="text" placeholder="Last Name" v-model="person.lastName" required autofocus>
               <span v-show="errors.has('lastName')" class="help is-danger">{{ errors.first('lastName') }}</span>
             </p>
 
             <p :class="{ 'control': true }">
               <input ref="email" id="email" v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"
-                     data-vv-delay="300" name="email" type="text" placeholder="Email" v-model="person.login.username" required>
+                     data-vv-delay="300" name="email" type="text" placeholder="Email" v-model="person.login.username" required autofocus>
               <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
             </p>
 
             <p :class="{ 'control': true }">
               <input ref="address" id="address" v-validate="{ required: true, regex: /^[-\w\s]+$/ }" :class="{'input': true, 'is-danger': errors.has('address') }"
                      data-vv-delay="300" name="address" type="text" placeholder="Street Address" v-model="person.address" required>
-              <span v-show="errors.has('address')" class="help is-danger">{{ errors.first('address') }}</span>
+              <span v-show="errors.has('address')" class="help is-danger">{{ errors.first('address') }}</span autofocus>
             </p>
 
             <p :class="{ 'control': true }">
@@ -41,7 +41,7 @@
             </p>
 
             <p :class="{ 'control': true }">
-              <input ref="state" id="state" v-validate="{ required: true, regex: /^[A-z]{2}$/g }" :class="{'input': true, 'is-danger': errors.has('alpha') }"
+              <input ref="state" id="state" v-validate="{ required: true, regex: /^[A-Z]{2}$/g }" :class="{'input': true, 'is-danger': errors.has('alpha') }"
                      data-vv-delay="300" name="state" type="text" placeholder="State ex: OH" v-model="person.state" required>
               <span v-show="errors.has('alpha')" class="help is-danger">{{ errors.first('alpha') }}</span>
             </p>
@@ -82,9 +82,8 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
-          <button :disabled="isDisabled" @click.prevent="register" type="submit" class="btn btn-primary">Register</button>
+          <button :disabled="isDisabled" @click.prevent="register" class="btn btn-primary">Register</button>
           <div class="login-help">
-            <!--<a href="#">Forgot Password</a>-->
           </div>
         </div>
       </div>
@@ -142,7 +141,11 @@
         },
         computed: {
             isDisabled(){
-                return this.errors.any() || this.person.email === '';
+                if (!this.errors.any() && this.person.email !== '' && this.password !== '' && this.firstName !== ''){
+                    return false;
+                } else {
+                    return true;
+                }
             },
             verifiedPW(){
                 if(this.person.password === this.passwordVerify){
@@ -152,7 +155,7 @@
         },
         methods: {
             register: function(){
-                if(this.person.login.username.match("supplyonthefly")){
+                if(this.person.login.username.match("@supplyonthefly.")){
                     this.registerEmployee(this.sendEmployeeEmail);
                 } else {
                     this.registerCustomer(this.sendCustomerEmail);
@@ -175,6 +178,8 @@
             registerEmployee(cb){
                 let _this = this;
                 let password = this.randomString(9);
+                this.person.login.password = password;
+                this.passwordVerify = password;
                 console.log(this.person);
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/register/employee', {
                     employee: this.employee,
@@ -192,8 +197,12 @@
             },
             sendCustomerEmail(){
                 let user = this.person;
-                this.axios.post('http://localhost:8081/customer', {
-                    user: user,
+
+                this.axios({
+                    method: 'post',
+                    url: 'http://13.58.119.213:3000/customer',
+                    params: {user: user},
+                    headers: {'Content-Type': 'multipart/form-data'}
                 }).then(function (response) {
                     console.log(response);
                 }).catch(function (error) {
@@ -203,7 +212,7 @@
             sendEmployeeEmail(password){
                 this.person.login.password = password;
                 let user = this.person;
-                this.axios.post('http://localhost:8081/employee', {
+                this.axios.post('http://13.58.119.213:3000/employee', {
                     user: user,
                 }).then(function (response) {
                     console.log(response);
@@ -278,7 +287,6 @@
     font-size: 16px;
     width: 100%;
     margin-bottom: 10px;
-    /*background: #fff;*/
     border: 1px solid #d9d9d9;
     border-top: 1px solid #c0c0c0;
     padding: 0 8px;

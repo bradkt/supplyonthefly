@@ -51,7 +51,6 @@
 
 <script>
     import { mapActions } from 'vuex';
-//    import { mapGetters } from 'vuex';
 
     export default {
 //        name: 'Login',
@@ -70,9 +69,6 @@
 
         },
         computed: {
-//            ...mapGetters({
-//                addUserData: 'addUserData',
-//            }),
             isDisabled(){
                 return this.errors.any() || this.email === '';
             },
@@ -84,10 +80,7 @@
                 addUserData: 'addUserData',
             }),
             authUser() {
-//                this.login(); //comment out when login works
-                console.log('auth user');
                 let _this = this;
-
                 this.axios.get(
                     'http://supplyonthefly.business:8080/capstone-website-api/auth/user/login',
                     { auth: {
@@ -100,7 +93,6 @@
                             jQuery('#LoginModal').modal('hide');
                             _this.email = '';
                             _this.password = '';
-                            console.log(response);
                             this.addUserData(response.data);
                             if (response.data.employee) {
                                 this.empLogin();
@@ -118,46 +110,44 @@
                 }, 200);
             },
             forgotLogin() {
+                this.password = '';
                 this.header = 'Recover Your Account';
                 this.buttonText = 'Recover';
                 this.recover = true;
-
                 let _this = this;
-                console.log('forgotLogin');
-//                this.sendEmail(_this.email, '3434343434');
                 if (this.errors.items.length !== 0){
                     this.helperText = 'Please Supply An Email';
                 } else {
                     let newPassword = this.randomString(9);
                     let encodedPassword = window.btoa(newPassword);
-                    console.log('new password: ' + newPassword);
-                    console.log('password encoded: ' + encodedPassword);
+//                    console.log('new password: ' + newPassword);
+//                    console.log('password encoded: ' + encodedPassword);
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/password/reset', {
                           username: _this.email,
                           password: encodedPassword,
                     }).then(function (response) {
                         _this.sendEmail(_this.email, newPassword);
-                        console.log(response);
                         _this.recover = false;
+                        _this.header = 'Login to Your Account';
+                        _this.buttonText = 'Login';
                         _this.email = '';
                         jQuery('#LoginModal').modal('hide');
                     }).catch(function (error) {
-//                        _this.sendEmail(_this.email, newPassword);
                         console.log(error);
                     });
                 }
             },
             sendEmail(username, password){
-                this.axios.post('http://localhost:8081/recover', {
-                    login: {
-                        username: username,
-                        password: password,
-                    },
-                }).then(function (response) {
-                    console.log(response);
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                    this.axios.post('http://13.58.119.213:3000/recover', {
+                        login: {
+                            username: username,
+                            password: password,
+                        },
+                    }).then(function (response) {
+                        console.log(response);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
             },
             randomString(i){
                 let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

@@ -1,5 +1,5 @@
-<!--<keep-alive></keep-alive>-->
 <template>
+  <transition>
     <section class="container">
         <div class="cart-summary">
             <span>Welcome {{ getUserData.person.firstname || '' }}</span>
@@ -61,6 +61,7 @@
       <Payment></Payment>
 
     </section>
+  </transition>
 </template>
 
 <script>
@@ -77,12 +78,9 @@
         },
         data() {
             return {
-//                Title: '',
             };
         },
         created(){
-            // function that determines if there are skus in local storage that are not in cart
-
 
         },
         beforeRouteEnter(to, from, next){
@@ -147,35 +145,24 @@
         }
     }
 
-//    {
-//        "cartDate": "2017-12-10",
-//        "customerId": "1234567",
-//        "orderItem": [
-//        {
-//            "quantity": 2,
-//            "sessionId": "1234567890",
-//            "sku": "1234567890",
-//            "total": 24.64
-//        },
-//        {
-//            "quantity": 1,
-//            "sessionId": "1234567890",
-//            "sku": "1234567890",
-//            "total": 12.32
-//        }
-//    ],
-//        "paymentMethod": "Visa",
-//        "sessionId": "1234567890",
-//        "taxRate": 7.65,
-//        "total": 1000
-//    }
 </script>
 
 <style scoped>
 
+  .v-enter, .v-leave-to {
+    opacity: 0;
+  }
+
+  .v-enter-active, .v-leave-active {
+    -webkit-transition: opacity 2s;
+    -moz-transition: opacity 2s;
+    -ms-transition: opacity 2s;
+    -o-transition: opacity 2s;
+    transition: opacity 2s;
+  }
+
     section {
         font-family: Helvetica, sans-serif;
-        /*background-color: rgba(50, 50, 50, 0.1);*/
     }
 
     .emptyCart{

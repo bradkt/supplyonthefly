@@ -15,7 +15,6 @@
                     </span>
         <div v-if="!purchasedStatus" class="modal-body card-wrapper">
           <form>
-
             <div>
               <select class="list" v-model="cardType">
                 <option disabled value="">Type of Card</option>
@@ -26,19 +25,17 @@
               </select>
             </div>
 
-
             <p :class="{ 'control': true }">
-              <!--required|credit_card-->
-              <input v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="creditCard"
+              <!--required|credit_card required|numeric -->
+              <input v-validate="'required|credit_card'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="creditCard"
                      data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number" autofocus>
-              <span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number</span>
-              <p v-if="isDisabled" class="help is-danger">{{ creditCardMessage }}</p>
+              <span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number that matches the type selected.</span>
             </p>
             <p :class="{ 'control': true }">
               <input v-validate="'required|date_format:MM/YY'" data-vv-delay="200" v-model="dateExpire"
                      :class="{'input': true, 'is-danger': errors.has('expiry') }" name="expiry" type="text" placeholder="MM/YY of Expiration" autofocus>
               <span v-show="errors.has('expiry')" class="help is-danger">Please Enter A Valid Month/Year</span>
-              <p v-if="isDisabled" class="help is-danger">{{ expireMessage }}</p>
+              <p v-if="!validExpireDate()" class="help is-danger">{{ expireMessage }}</p>
             </p>
             <p :class="{ 'control': true }">
               <input id="fullName" v-validate="'required|alpha_spaces'" :class="{'input': true, 'is-danger': errors.has('fullName') }"
@@ -55,7 +52,7 @@
 
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button @click.prevent="submitPayment(clearCart)" type="button" :disabled="isDisabled" class="btn btn-primary">Make Payment</button>
-            <button @click.prevent="submitPayment(clearCart)" type="button" :disabled="false" class="btn btn-primary">Use Card On File</button>
+            <button @click.prevent="submitPaymentOnFileCard(clearCart)" type="button" :disabled="false" class="btn btn-primary">Use Card On File</button>
           </form>
         </div>
 
@@ -63,17 +60,12 @@
           <form action="#">
             <!--required|credit_card-->
             <p><strong>Thank You!</strong> Your Order Has Been Placed. You will receive a confirmation email shortly.</p>
-
-
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-
-
           </form>
         </div>
         <div class="modal-footer">
           <div class="login-help">
-
+              {{ creditCardOnFileIssueMessage }}
           </div>
         </div>
       </div>
@@ -103,8 +95,9 @@
                 nameOnCard: '',
                 cardType: '',
                 purchasedStatus : false,
-                creditCardMessage: 'The Credit Card Number Entered Must be of the Card Type Selected.',
+                creditCardMessage: '',
                 expireMessage: 'Please select an expire date in the future.',
+                creditCardOnFileIssueMessage: '',
             }
         },
         created: function () {
@@ -119,19 +112,10 @@
 
             }),
             isDisabled(){
-                console.log('------------');
-                console.log('1: ' + this.getCreditCardType(this.creditCard, this.cardType));
-                console.log('2: ' + !this.errors.any());
-                console.log('3: ' + this.creditCard !== '');
-                console.log('4: ' + this.dateExpire !== '');
-                console.log('5: ' + this.validExpireDate());
-                console.log('------------');
                 if (!this.errors.any() && this.creditCard !== '' && this.dateExpire !== '' && this.cvv !== '' && this.validExpireDate() &&
                     this.getCreditCardType(this.creditCard, this.cardType)){
-                    console.log('this form can submit');
                     return false;
                 } else {
-                    console.log('this form is still disabled');
                     return true;
                 }
             },
@@ -143,10 +127,8 @@
             // add callback to change payment modal ui to "purchase complete check email" and clear the cart
             submitPayment(cb) {
                 let _this = this;
-                console.log(this.cardType);
                 let cartID = this.randomString(9);
                 let cartInfo = this.formatCartRequest();
-                // find way to submit saved data or input data depending on which button clicked
                 this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/cart/checkout', {
                     sessionId: cartID,
                     cartDate: this.moment(),
@@ -157,16 +139,39 @@
                 }).then(function (response) {
                     _this.purchasedStatus = true;
                     _this.purchaseEmail(cartInfo, cartID);
-                    console.log(response);
                     cb();
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
+            submitPaymentOnFileCard(cb) {
+                let _this = this;
+                let cartID = this.randomString(9);
+                let cartInfo = this.formatCartRequest();
+                if (this.getUserData.customer.cardType !== undefined && this.getUserData.customer.creditCard !== undefined &&
+                    this.getUserData.customer.cvv !== undefined) {
+                        this.axios.post('http://supplyonthefly.business:8080/capstone-website-api/user/cart/checkout', {
+                        sessionId: cartID,
+                        cartDate: this.moment(),
+                        customerId: this.getUserData.customer.customerId,
+                        itemList: cartInfo.cartDetails,
+                        paymentMethod: this.getUserData.customer.cardType,
+                        total: cartInfo.cartTotal,
+                    }).then(function (response) {
+                        _this.purchasedStatus = true;
+                        _this.purchaseEmail(cartInfo, cartID);
+                        cb();
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else {
+                    this.creditCardOnFileIssueMessage = 'An issue occurred in attempting to use the card on file, please complete form and contact support';
+                }
+            },
             purchaseEmail(cartInfo, cartID){
                 let user = { cartID: cartID, cartInfo: cartInfo, data: this.getUserData };
                 console.log(user);
-                this.axios.post('http://localhost:8081/purchase', {
+                this.axios.post('http://13.58.119.213:3000/purchase', {
                     user
                 }).then(function (response) {
                     console.log(response);
@@ -225,7 +230,7 @@
                 var discover_regex = new RegExp('^(6011|65|64[4-9]|62212[6-9]|6221[3-9]|622[2-8]|6229[01]|62292[0-5])[0-9]{0,}$'); //6011, 622126-622925, 644-649, 65
                 var mastercard_regex = new RegExp('^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[01]|2720)[0-9]{0,}$'); //2221-2720, 51-55
                 let message = (this.errors);
-                console.log(message);
+//                console.log(message);
                 if (number.match(visa_regex)) {
                     sel_brand = "Visa";
                 } else if (number.match(amex_regex)) {
@@ -238,69 +243,14 @@
                     sel_brand = "unknown";
                 }
                 if (sel_brand === cardType && number.toString().length > 12){
-                    message.items  = [];
                     return true;
                 } else {
                     return false;
-
                 };
 
             },
-
-
-
-
-
         }
     }
-//    {
-//        cartDate: "2017-12-10",
-//        customerId: "1234567",
-//        orderItem: [
-//        {
-//            price: 12.32,
-//            quantity: 2,
-//            sessionId: "1234567890",
-//            sku: "1234567890",
-//            total: 24.64
-//        },
-//        {
-//            price: 12.32,
-//            quantity: 1,
-//            sessionId: "1234567890",
-//            sku: "1234567890",
-//            total: 12.32
-//        }
-//    ],
-//        paymentMethod: "Visa",
-//        sessionId: "1234567890",
-//        total: 36.96
-//    }
-    //                    customer: {
-    //                        cardIssuer: "",
-    //                        ccFirstname: "",
-    //                        ccLastname: "",
-    //                        customerId: this.randomString(9),
-    //                        cvv: "",
-    //                        expDate: "",
-    //                        imageName: "",
-    //                        creditcardNumber: ""
-    //                    },
-    //                    person: {
-    //                        address: "140 Louis Lane",
-    //                        altEmail: "tracy@thesuper.com",
-    //                        city: "Columbus",
-    //                        firstname: "Clark",
-    //                        lastname: "Kent",
-    //                        login: {
-    //                            password: "qwerqwer",
-    //                            username: "btracy@oneyoungsters.com"
-    //                        },
-    //                        phoneNumber: "1-800-312-9951",
-    //                        registrationDate: "2017-11-02",
-    //                        state: "NY",
-    //                        zipcode: "12186"
-    //                    }
 </script>
 
 <style scoped>

@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <transition>
+    <section>
 
     <hr class="featurette-divider">
 
@@ -70,9 +71,6 @@
           <h2 class="featurette-heading">Products so Fabulous <span class="text-muted">It may blow your mind.</span></h2>
           <p class="lead">Supply On the Fly sells only the highest quality products from the most respected brands. You except the best, so that's what you will get from us.</p>
         </div>
-        <!--<div class="col-md-5">-->
-          <!--<img class="featurette-image img-responsive center-block round-corners" src="http://www.supplyonthefly.site/product-images/binder01.jpg" alt="Generic placeholder image">-->
-        <!--</div>-->
       </div>
 
       <hr class="featurette-divider">
@@ -99,13 +97,9 @@
           <img class="featurette-image img-responsive center-block round-corners" src="http://www.supplyonthefly.site/images/hassle-free-1.jpg" alt="Generic placeholder image" height="250" width="250">
         </div>
       </div>
-
-      <hr class="featurette-divider">
-
-      <!-- /END THE FEATURETTES -->
-    <!--<icon name="language" scale="3"></icon>-->
     </div>
-  </section>
+    </section>
+  </transition>
 </template>
 
 <script>
@@ -121,6 +115,17 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+  .v-enter, .v-leave-to {
+    opacity: 0;
+  }
+
+  .v-enter-active, .v-leave-active {
+    -webkit-transition: opacity 2s;
+    -moz-transition: opacity 2s;
+    -ms-transition: opacity 2s;
+    -o-transition: opacity 2s;
+    transition: opacity 2s;
+  }
 
 
   .category-images div {
@@ -129,7 +134,6 @@
   }
 
   .category-info {
-
 
   }
 

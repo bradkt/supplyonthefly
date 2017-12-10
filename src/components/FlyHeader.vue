@@ -1,7 +1,6 @@
 <template>
-
-    <header>
-
+    <transition>
+        <header>
         <div class="navbar-wrapper customHeaderTall"
              :class="{customHeaderShort: this.$route.fullPath === '/' ? false : true}">
 
@@ -64,7 +63,6 @@
                         </div>
                     </div>
                 </nav>
-
             </div>
         </div>
 
@@ -81,9 +79,7 @@
    <updater></updater>
 
     </header>
-
-
-
+    </transition>
 </template>
 <script>
     import { mapGetters } from 'vuex';
@@ -109,13 +105,6 @@
                 }
         },
         created: function () {
-//            let date = new Date;
-//            date.setDate(date.getDate() + 1);
-
-//            document.cookie = "username=brad tracy; expires=Thu, 18 Dec 2017 12:00:00 UTC";
-
-//            console.log(document.cookie);
-            // uncomment here to make request to get categories
             this.getCategories();
         },
         watch: {
@@ -142,21 +131,36 @@
                     this.categories = response.data.list;
                 })
             },
-
         }
     }
 </script>
 
 <style scoped>
 
+    .v-enter, .v-leave-to {
+        opacity: 0;
+    }
+
+    .v-enter-active, .v-leave-active {
+        -webkit-transition: opacity 1s;
+        -moz-transition: opacity 1s;
+        -ms-transition: opacity 1s;
+        -o-transition: opacity 1s;
+        transition: opacity 1s;
+    }
+
+
     header {
+        /*max-width: 1200px;*/
+        background: url("http://www.supplyOnTheFly.site/images/hp-ink-promo-1008x408.jpg") center center no-repeat;
+        /*margin: 0 auto;*/
         width: 100%;
-        background: url("http://www.supplyOnTheFly.site/images/sotf-image-header.jpg") center center no-repeat;
         background-size: cover;
     }
 
     .customHeaderTall {
         height: 500px;
+
     }
 
     .customHeaderShort{
@@ -230,6 +234,13 @@
 
     header .navbar-wrapper .navbar-static-top .container[data-v-aa5c1a1a] {
         background-color: rgba(50, 50, 50, 0.7);
+    }
+
+    @media  {
+        header {
+            width: 100%;
+            background-size: cover;
+        }
     }
 
 </style>

@@ -57,17 +57,6 @@
               <span v-show="errors.has('numeric')" class="help is-danger">{{ errors.first('numeric') }}</span>
             </p>
 
-            <!--<p :class="{ 'control': true }">-->
-              <!--<input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"-->
-                     <!--data-vv-delay="300" name="password" type="password" placeholder="Password" v-model="getUserData.person.login.password" required>-->
-              <!--<span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>-->
-            <!--</p>-->
-            <!--<p :class="{ 'control': true }">-->
-              <!--<input id="passwordVerify" v-validate="'required|confirmed:password'" :class="{'input': true, 'is-danger': errors.has('passwordVerify') }"-->
-                     <!--data-vv-delay="300" data-vv-as="password" name="passwordVerify" type="password" placeholder="Verify Password" required>-->
-              <!--<span v-show="errors.has('passwordVerify')" class="help is-danger">{{ errors.first('passwordVerify') }}</span>-->
-            <!--</p>-->
-
             <hr>
             <div v-if="getUserData.customer">
               <h2>Payment Information</h2>
@@ -84,11 +73,11 @@
                 <span v-show="errors.has('ccLastName')" class="help is-danger">{{ errors.first('ccLastName') }}</span>
               </p>
               <!--required|credit_card-->
-              <!--<p :class="{ 'control': true }">-->
-                <!--<input v-validate="'required|alpha'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="getUserData.customer.creditcardNumber"-->
-                       <!--data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number">-->
-                <!--<span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number</span>-->
-              <!--</p>-->
+              <p :class="{ 'control': true }">
+                <input v-validate="'credit_card'" :class="{'input': true, 'is-danger': errors.has('credit_card') }" v-model="getUserData.customer.creditcardNumber"
+                       data-vv-delay="500" name="creditCard" type="text" placeholder="Credit Card Number">
+                <span v-show="errors.has('creditCard')" class="help is-danger">Please Enter A Valid Credit Card Number</span>
+              </p>
               <div>
                 <select class="list" v-model="getUserData.customer.creditcardNumber">
                   <option>Type of Card</option>
@@ -101,6 +90,7 @@
                 <input v-validate="'date_format:MM/YY'" data-vv-delay="200" v-model="getUserData.customer.expDate"
                        :class="{'input': true, 'is-danger': errors.has('expiry') }" name="expiry" type="text" placeholder="MM/YY of Expiration">
                 <span v-show="errors.has('expiry')" class="help is-danger">Please Enter A Valid Month/Year</span>
+                <p v-if="!validExpireDate()" class="help is-danger">{{ expireMessage }}</p>
               </p>
               <p :class="{ 'control': true }">
                 <input id="cvv" v-validate="{rules: { regex:  /^[0-9]{3,4}$/}}" data-vv-delay="200"
@@ -125,6 +115,19 @@
               </p>
             </div>
 
+            <hr>
+            <h2>Password</h2>
+            <p :class="{ 'control': true }">
+            <input id="password" v-validate="'required|alpha_num'" :class="{'input': true, 'is-danger': errors.has('password') }"
+            data-vv-delay="300" name="password" type="password" placeholder="Password" v-model="getUserData.person.login.password" required>
+            <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
+            </p>
+            <p :class="{ 'control': true }">
+            <input id="passwordVerify" v-validate="'required|confirmed:password'" :class="{'input': true, 'is-danger': errors.has('passwordVerify') }"
+            data-vv-delay="300" data-vv-as="password" name="passwordVerify" v-model="newPassword" type="password" placeholder="Verify Password" required>
+            <span v-show="errors.has('passwordVerify')" class="help is-danger">{{ errors.first('passwordVerify') }}</span>
+            </p>
+
           </form>
 
         </div>
@@ -133,7 +136,6 @@
 
           <button :disabled="isDisabled" @click.prevent="updateData" type="submit" class="btn btn-primary">Update Information</button>
           <div class="login-help">
-            <!--<a href="#">Forgot Password</a>-->
           </div>
         </div>
       </div>
@@ -143,43 +145,14 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import moment from 'moment';
+
     export default {
         data () {
             return {
                 headerText: "Supply On The Fly",
                 newPassword: '',
                 creditCard: '',
-//                person: {
-//                    altEmail: '',
-//                    firstName: this.getUserData.person.firstName || '',
-//                    lastName: this.getUserData.person.lastName || '',
-//                    address: '',
-//                    city: '',
-//                    zipcode: '',
-//                    state: '',
-//                    phoneNumber: '',
-//                    registrationDate: "2017-11-02",
-//                    login:{
-//                        password: this.getUserData.person.login.password || '',
-//                        username: this.getUserData.person.login.username || '',
-//                    },
-//                },
-//                employee: {
-//                    department: '',
-//                    employeeNumber: '',
-//                    hireDate: '',
-//                    role: '',
-//                },
-//                customer: {
-//                    cardIssuer: '',
-//                    ccFirstname: '',
-//                    ccLastname: '',
-//                    creditcardNumber: '',
-//                    customerId: '',
-//                    cvv: '',
-//                    expDate: '',
-//                    imageName: '',
-//                },
             }
         },
         created: function () {
@@ -191,32 +164,38 @@
                 getUserData: 'getUserData'
             }),
             isDisabled(){
-                return this.errors.any();
+                if (!this.errors.any()){
+                    return false;
+                } else {
+                    return true;
+                }
             },
         },
         methods: {
             updateData(){
-                console.log(JSON.stringify(this.getUserData));
+                let _this = this;
                 if (this.getUserData.customer) {
-                    console.log("------------------Customer----------");
                     let customerID = this.getUserData.customer.customerId;
-                    console.log(customerID);
-                    console.log(this.getUserData);
+                    if (this.newPassword != ''){
+                        this.getUserData.person.login.password = window.btoa(this.newPassword);
+                        this.newPassword = window.btoa(this.newPassword);
+                    }
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/customer/profile/' + customerID, {
-                        // this could be failing because I'm useing this inside the callback wrong
                         customer: this.getUserData.customer,
                         person: this.getUserData.person,
                     }).then(function (response) {
                             console.log(response);
+                            _this.updatePassword();
                     }).catch(function (error) {
                             console.log(error);
                     });
                 }
                 if (this.getUserData.employee) {
                     let employeeID = this.getUserData.employee.employeeNumber;
-                    console.log("------------------Employee----------");
-                    console.log(employeeID);
-                    console.log(this.getUserData);
+                    if (this.newPassword != ''){
+                        this.getUserData.person.login.password = window.btoa(this.newPassword);
+                        this.newPassword = window.btoa(this.newPassword);
+                    }
                     this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/employee/profile/' + employeeID, {
                         employee: this.getUserData.employee,
                         person: this.getUserData.person,
@@ -228,36 +207,28 @@
                 }
 
             },
+            updatePassword(){
+                let email = this.getUserData.person.login.username;
+
+                this.axios.put('http://supplyonthefly.business:8080/capstone-website-api/user/password/reset', {
+                    username: email,
+                    password: this.newPassword,
+                }).then(function (response) {
+                    console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            validExpireDate() {
+                let dateArray = this.dateExpire.split('/');
+                let month = dateArray[0];
+                let year = parseInt(dateArray[1]) + 2000;
+                let today = moment();
+                let dateToExpire = moment(month + "-03-" + year);
+                return today.isBefore(dateToExpire);
+            },
         }
     }
-
-    //                    customer: this.customer,
-    //                    person: this.person,
-    //                    customer: {
-    //                        cardIssuer: "",
-    //                        ccFirstname: "",
-    //                        ccLastname: "",
-    //                        customerId: this.randomString(9),
-    //                        cvv: "",
-    //                        expDate: "",
-    //                        imageName: "",
-    //                        creditcardNumber: ""
-    //                    },
-    //                    person: {
-    //                        address: "140 Louis Lane",
-    //                        altEmail: "tracy@thesuper.com",
-    //                        city: "Columbus",
-    //                        firstname: "Clark",
-    //                        lastname: "Kent",
-    //                        login: {
-    //                            password: "qwerqwer",
-    //                            username: "btracy@oneyoungsters.com"
-    //                        },
-    //                        phoneNumber: "1-800-312-9951",
-    //                        registrationDate: "2017-11-02",
-    //                        state: "NY",
-    //                        zipcode: "12186"
-    //                    }
 </script>
 
 <style scoped>

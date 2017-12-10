@@ -76,14 +76,37 @@
         <h3 class="">Employee Directory</h3>
         <ul class="employee-list">
           <li v-for="emp in employees">
-            <a @click="showEmp(emp)">{{ emp.name }}</a><span>{{ emp.position }}</span><span>{{ emp.phone }}</span>
+          <a @click="showEmp(emp)">{{ emp.name }}</a><span>{{ emp.position }}</span><span>{{ emp.phone }}</span>
           </li>
         </ul>
       </div>
 
     </div>  <!--End Row-->
 
+
+    <div class="modal fade" id="displayInfo" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div v-if="!recover" class="modal-body">
+
+            {{ data }}
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </section>
+
+
+
+
+
 </template>
 
 <script>
@@ -97,6 +120,7 @@
         },
         data() {
             return {
+                data:'',
                 fromDate: new Date(2017, 10, 10),
                 toDate: new Date(2017, 11,  12),
                 startDateDisabled: {
@@ -150,13 +174,13 @@
                                 email: "jason@supplyonthefly.site", sickDaysRemain: "3", vacationDaysRemain: "6", hireDate: "",
                                 department: "Technoloy Development", status: "active"},
                             "emp3": { id: "sery89gh", position: "Software Engineer", name: "Yonas Milo", phone: "(614)555-5555",
-                                email: "brad@supplyonthefly.site", sickDaysRemain: "4", vacationDaysRemain: "2", hireDate: "",
+                                email: "yonas@supplyonthefly.site", sickDaysRemain: "4", vacationDaysRemain: "2", hireDate: "",
                                 department: "Technoloy Development", status: "active"},
                             "emp4": { id: "43lk5jh5", position: "Network Engineer", name: "Jamie Diehl", phone: "(614)555-5555",
-                                email: "brad@supplyonthefly.site", sickDaysRemain: "5", vacationDaysRemain: "3", hireDate: "",
+                                email: "jamie@supplyonthefly.site", sickDaysRemain: "5", vacationDaysRemain: "3", hireDate: "",
                                 department: "Technoloy Development", status: "active"},
                             "emp5": { id: "w45kj5kl", position: "Network Engineer", name: "Jeff Lynch", phone: "(614)555-5555",
-                                email: "brad@supplyonthefly.site", sickDaysRemain: "6", vacationDaysRemain: "4", hireDate: "",
+                                email: "jeff@supplyonthefly.site", sickDaysRemain: "6", vacationDaysRemain: "4", hireDate: "",
                                 department: "Technoloy Development", status: "active"},
                 },
             };
@@ -174,20 +198,26 @@
                 isLoggedIn: 'isLoggedIn',
             }),
             isDisabled(){
-                return false;
+                if (!this.errors.any() && this.reasonSelected != 'Please select Reason') {
+                    return false;
+                } else {
+                    return true;
+                }
+
             },
         },
         methods: {
             showEmp(emp) {
-                alert( "\n " +
-                      "Employee Name - " + emp.name + "\n " +
-                      "Position -      " + emp.position + "\n " +
-                      "email -         " + emp.email + "\n " +
-                      "phone -         " + emp.phone + "\n "
-                );
+                this.data =
+                  `Employee Name: ${emp.name} -
+                  Position:      ${emp.position} -
+                  Email:      ${emp.email} -
+                  Phone:      ${emp.phone}`;
+                jQuery('#displayInfo').modal('show');
             },
             submitTimeOff(){
-                alert("Your Request Has been Submitted.");
+                this.data = "Your Request Has been Submitted.";
+                jQuery('#displayInfo').modal('show');
             },
         },
     }
@@ -292,12 +322,6 @@
     margin: 25px 0 10px 0;
   }
 
-  /*.bg-top {*/
-    /*background-color: #00BEC5;*/
-    /*color: #ffffff;*/
-    /*min-height: 300px;*/
-  /*}*/
-
   .bg-2 {
     background-color: #474e5d; /* Dark Blue */
     color: #ffffff;
@@ -356,6 +380,38 @@
 
   span.med-num {
     font-size: 35px;
+  }
+
+  #displayInfo input[type=text], input[type=password] {
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 10px;
+    /*background: #fff;*/
+    border: 1px solid #d9d9d9;
+    border-top: 1px solid #c0c0c0;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  #displayInfo input[type=text]:hover, input[type=password]:hover {
+    border: 1px solid #b9b9b9;
+    border-top: 1px solid #a0a0a0;
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .modal-footer {
+    text-align: center;
+  }
+
+  .modal-footer button, .modal-footer .login-help {
+    margin: 15px 0 0 0;
   }
 
 </style>

@@ -1,8 +1,6 @@
 <template>
     <footer>
-        <!--<p class="pull-right"><a href="#">Back to top</a></p>-->
-        <p>&copy; 2017 {{ footerText }} Inc. &middot;
-            Find Us On: <a href="#">Facebook</a> &amp; <a href="#">Twitter</a>
+        <p><span>&copy; 2017 {{ footerText }} Inc. &middot;</span>
         </p>
     </footer>
 </template>
@@ -23,8 +21,14 @@
     footer {
         height: 100px;
         font-family: Helvetica, sans-serif;
-        margin: 15px 0 0 0;
-        /*background-color: rgba(50, 50, 50, 0.3);*/
+        margin: 150px 0 0 0;
+        font-size: 18px;
+        padding: 20px 0;
+        background-color: rgba(61, 55, 53, 0.6);
+    }
+
+    footer span {
+        margin: 0px 40px;
     }
 
 </style>

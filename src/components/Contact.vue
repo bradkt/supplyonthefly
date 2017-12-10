@@ -62,6 +62,19 @@
         methods: {
             submit() {
                 console.log(this.name, this.email, this.flyMessage);
+                let data = {
+                    name: this.name,
+                    email: this.email,
+                    message: this.flyMessage,
+                };
+                this.axios.post('http://13.58.119.213:3000/contact', {
+                    data: data,
+                }).then(function (response) {
+                    jQuery('#LoginModal').modal('hide');
+                    console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
         }
     }
